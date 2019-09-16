@@ -12,10 +12,12 @@
 		http://www.springframework.org/schema/aop
 		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
-	<tx:annotation-driven />
-
+	<!-- local -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 		  init-method="init" destroy-method="close">
+		<property name="driverClassName">
+			<value>${jdbc.driverClassName}</value>
+		</property>
 		<property name="url">
 			<value>${jdbc.url}</value>
 		</property>
@@ -25,69 +27,67 @@
 		<property name="password">
 			<value>${jdbc.password}</value>
 		</property>
-		<property name="initialSize">
-			<value>${jdbc.initialSize}</value>
+		<property name="filters" value="stat"/>
+
+		<property name="maxActive" value="20"/>
+		<property name="initialSize" value="1"/>
+		<property name="maxWait" value="60000"/>
+		<property name="minIdle" value="1"/>
+
+		<property name="timeBetweenEvictionRunsMillis" value="60000"/>
+		<property name="minEvictableIdleTimeMillis" value="300000"/>
+
+		<property name="validationQuery" value="SELECT 'x'"/>
+		<property name="testWhileIdle" value="true"/>
+		<property name="testOnBorrow" value="false"/>
+		<property name="testOnReturn" value="false"/>
+		<!-- 自动清除无用连接 -->
+		<property name="removeAbandoned">
+			<value>true</value>
 		</property>
-		<property name="maxActive">
-			<value>${jdbc.maxActive}</value>
+		<!-- 清除无用连接的等待时间 -->
+		<property name="removeAbandonedTimeout">
+			<value>1800</value>
 		</property>
-		<property name="proxyFilters">
-			<list>
-				<ref bean="stat-filter" />
-				<ref bean="wall-filter" />
-			</list>
-		</property>
-	</bean>
-
-	<bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
-		<property name="slowSqlMillis" value="1000" />
-		<property name="logSlowSql" value="true" />
-		<property name="mergeSql" value="true" />
-	</bean>
-
-	<bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter">
-		<property name="dbType" value="oracle" />
-		<property name="config" ref="wall-filter-config" />
-	</bean>
-
-	<bean id="wall-filter-config" class="com.alibaba.druid.wall.WallConfig">
-		<property name="multiStatementAllow" value="true" />
-	</bean>
-
-	<bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor"></bean>
-	<bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
-		<property name="patterns">
-			<list>
-				<value>com.wutuobang.*.controller.*</value>
-				<value>com.wutuobang.*.service.*</value>
-			</list>
-		</property>
-	</bean>
-	<aop:config>
-		<aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut"/>
-	</aop:config>
-
-	<bean id="transactionManager"
-		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource">
-			<ref bean="dataSource" />
+		<!-- 连接属性 -->
+		<property name="connectionProperties">
+			<value>clientEncoding=UTF-8</value>
 		</property>
 	</bean>
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="configLocation" value="classpath:spring/mybatis.xml" />
-		<property name="dataSource" ref="dataSource" />
+		<property name="dataSource" ref="dataSource"/>
 		<property name="mapperLocations">
-			<list>
-				<value>classpath:mybatis/common/*Mapper.xml</value>
-				<value>classpath:mybatis/score/*Mapper.xml</value>
-				<value>classpath:mybatis/shiro/*Mapper.xml</value>
-			</list>
+			<array>
+				<value>classpath*:mapper/core/**/*.xml</value>
+			</array>
 		</property>
+		<property name="typeAliasesPackage" value="com.coolplay.company.core.model"/>
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageHelper">
+					<property name="properties">
+						<value>
+							dialect=mysql
+							reasonable=true
+							supportMethodsArguments=true
+							params=count=countSql
+							autoRuntimeDialect=true
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
+		<property name="configLocation" value="classpath:spring/mybatis-config.xml"/>
 	</bean>
 
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.wutuobang.shiro.dao,com.wutuobang.score.dao,com.wutuobang.common.dao" />
-		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.coolplay.company.core.dao"/>
+		<property name="properties">
+			<value>
+				mappers=tk.mapper.mapper.common.Mapper
+			</value>
+		</property>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 	</bean>
 </beans>
