@@ -33,7 +33,7 @@ public interface IUserService extends IBaseService<User> {
      * @param loginName
      * @return
      */
-    List<FunctionDto> findUserFunctionByLoginName(String loginName);
+    public List<FunctionDto> findUserFunctionByLoginName(String loginName);
 
     /**
      * 根据用户ID获取登录名

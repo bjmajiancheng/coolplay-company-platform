@@ -61,9 +61,6 @@ public class CoolplayUserCache implements org.springframework.security.core.user
 
     public void removeUserFromCacheByUserId(Integer userId) {
         String loginName = userService.findLoginNameByUserId(userId);
-        if ("niuhaixu".equals(loginName)) {
-            return;
-        }
         if (loginName != null) {
             removeUserFromCache(loginName);
         }
