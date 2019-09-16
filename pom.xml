@@ -281,6 +281,18 @@
       <version>1.2</version>
     </dependency>
 
+    <!-- 物理分页插件 -->
+    <dependency>
+      <groupId>com.github.pagehelper</groupId>
+      <artifactId>pagehelper</artifactId>
+      <version>4.1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.jsqlparser</groupId>
+      <artifactId>jsqlparser</artifactId>
+      <version>0.9.4</version>
+    </dependency>
+
 
     <!-- Velocity视图所需jar -->
     <dependency>
@@ -425,7 +437,7 @@
   </profiles>
 
   <build>
-    <finalName>wu-score</finalName>
+    <finalName>coolplay-company-platform</finalName>
     <filters>
       <filter>src/main/resources/profile/profile.${env}.properties</filter>
     </filters>
