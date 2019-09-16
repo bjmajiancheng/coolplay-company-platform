@@ -109,22 +109,4 @@
         <property name="resolveLazily" value="true"/>
     </bean>
 
-    <!-- Kaptcha验证码生成器 -->
-    <bean name="producer" class="com.google.code.kaptcha.impl.DefaultKaptcha" scope="singleton">
-        <property name="config">
-            <bean class="com.google.code.kaptcha.util.Config">
-                <constructor-arg>
-                    <props>
-                        <prop key="kaptcha.border">no</prop>
-                        <prop key="kaptcha.textproducer.font.color">black</prop>
-                        <prop key="kaptcha.textproducer.char.space">3</prop>
-                        <prop key="kaptcha.textproducer.char.length">4</prop>
-                        <prop key="kaptcha.textproducer.char.string">1234567890</prop>
-                        <prop key="kaptcha.textproducer.font.size">40</prop>
-                    </props>
-                </constructor-arg>
-            </bean>
-        </property>
-    </bean>
-
 </beans>
