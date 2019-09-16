@@ -29,7 +29,7 @@ public class CoolplayUserCache implements org.springframework.security.core.user
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (this.cache == null) this.cache = new DavdianNullCache<String, Object>();
+        if (this.cache == null) this.cache = new CoolplayNullCache<String, Object>();
         Assert.notNull(this.cache);
     }
 

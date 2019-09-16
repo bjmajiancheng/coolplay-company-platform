@@ -5,7 +5,7 @@ import com.coolplay.company.common.tools.IBasicCache;
 /**
  * Created by cgj on 2016/4/13.
  */
-public class DavdianNullCache<K, V> implements IBasicCache<K, V> {
+public class CoolplayNullCache<K, V> implements IBasicCache<K, V> {
 
     @Override
     public void set(K key, V value) {

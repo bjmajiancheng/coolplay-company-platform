@@ -81,5 +81,28 @@
         <beans:property name="userCache" ref="userCache"/>
     </beans:bean>
 
+    <!-- 资源国际化 -->
+    <beans:bean id="messageSource"
+                class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <beans:property name="basename"
+                        value="classpath:/config/properties/messages_zh_CN"/>
+    </beans:bean>
+
+    <!-- 自定义验证成功后处理的拦截器 -->
+    <beans:bean id="filterSecurityInterceptor"
+                class="com.coolplay.company.security.security.SecurityInterceptor">
+        <beans:property name="securityMetadataSource" ref="davdianSecurityMetadataSource"/>
+        <beans:property name="accessDecisionManager"
+                        ref="davdianAccessDecisionManager"/>
+        <beans:property name="authenticationManager" ref="authenticationManager"/>
+    </beans:bean>
+
+    <beans:bean id="davdianAccessDecisionManager"
+                class="com.coolplay.company.security.security.AccessDecisionManager"/>
+
+    <beans:bean id="davdianSecurityMetadataSource"
+                class="com.coolplay.company.security.security.SecurityMetadataSourceImpl">
+        <beans:constructor-arg ref="securityService"/>
+    </beans:bean>
 
 </beans:beans>

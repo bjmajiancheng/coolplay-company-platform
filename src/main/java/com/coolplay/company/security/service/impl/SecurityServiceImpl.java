@@ -1,24 +1,35 @@
 package com.coolplay.company.security.service.impl;
 
+import com.coolplay.company.common.tools.RedisCache;
 import com.coolplay.company.core.model.User;
+import com.coolplay.company.security.constants.SecurityConstant;
 import com.coolplay.company.security.security.SecurityUser;
+import com.coolplay.company.security.service.IRoleService;
 import com.coolplay.company.security.service.ISecurityService;
 import com.coolplay.company.security.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by majiancheng on 2019/9/16.
  */
+@Service("securityService")
 public class SecurityServiceImpl implements ISecurityService {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IRoleService roleService;
+
+    private RedisCache redisCache;
+
     /**
      * 根据登录名称获取用户信息
      *
@@ -40,5 +51,42 @@ public class SecurityServiceImpl implements ISecurityService {
         }
         SecurityUser securityUser = new SecurityUser(user, userGrantedAuthorities);
         return securityUser;
+    }
+
+    @Override
+    public Map<String, Collection<ConfigAttribute>> getCacheResourceMap() {
+        List<Map> roleFunctions = (List<Map>) redisCache.get(SecurityConstant.RESOURCE_MAP);
+        if (roleFunctions == null) {
+            return getDbResourceMap();
+        }
+        return getResourceMap(roleFunctions);
+    }
+
+    @Override
+    public Map<String, Collection<ConfigAttribute>> getDbResourceMap() {
+        List<Map> roleFunctions = roleService.findRoleMatchUpFunctions();
+        redisCache.set(SecurityConstant.RESOURCE_MAP, roleFunctions);
+        return getResourceMap(roleFunctions);
+    }
+
+    private Map<String, Collection<ConfigAttribute>> getResourceMap(List<Map> roleFunctions) {
+        Map<String, Collection<ConfigAttribute>> resourceMap = new HashMap<>();
+        if (roleFunctions != null && roleFunctions.size() > 0) {
+            for (Map roleFunction : roleFunctions) {
+                String url = (String) roleFunction.get("function");
+                Integer role = (Integer) roleFunction.get("role");
+                Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>();
+                if (!resourceMap.containsKey(url)) {
+                    configAttributes.add(new SecurityConfig(String.valueOf(role)));
+                    resourceMap.put(url, configAttributes);
+                } else {
+                    ConfigAttribute configAttribute = new SecurityConfig(String.valueOf(role));
+                    configAttributes = resourceMap.get(url);
+                    configAttributes.add(configAttribute);
+                    resourceMap.put(url, configAttributes);
+                }
+            }
+        }
+        return resourceMap;
     }
 }

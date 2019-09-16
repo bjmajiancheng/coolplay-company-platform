@@ -6,12 +6,14 @@ import com.coolplay.company.core.model.User;
 import com.coolplay.company.security.dto.FunctionDto;
 import com.coolplay.company.security.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Created by majiancheng on 2019/9/16.
  */
+@Service("userService")
 public class UserServiceImpl extends BaseService<User> implements IUserService {
 
     @Autowired
