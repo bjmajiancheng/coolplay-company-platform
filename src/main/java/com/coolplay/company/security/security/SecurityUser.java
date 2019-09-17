@@ -27,7 +27,7 @@ public class SecurityUser extends User {
 
     public SecurityUser(com.coolplay.company.core.model.User user,
             Collection<GrantedAuthority> userGrantedAuthorities) {
-        super(user.getUserName(), user.getPassword(), user.getStatus() == 1, user.getAccountNonExpired(),
+        super(user.getUserName(), user.getPassword(), user.getEnabled() == 1, user.getAccountNonExpired(),
                 user.getCredentialsNonExpired(), user.getAccountNonLocked(), userGrantedAuthorities);
         if (user != null) {
             setId(user.getId());

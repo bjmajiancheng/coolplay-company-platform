@@ -4,6 +4,7 @@ import com.coolplay.company.common.baseservice.IBaseService;
 import com.coolplay.company.core.model.User;
 import com.coolplay.company.security.dto.FunctionDto;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,4 +43,6 @@ public interface IUserService extends IBaseService<User> {
      * @return
      */
     public String findLoginNameByUserId(Integer userId);
+
+    void updateLastLoginInfoByUserName(String username, Date date, String remoteAddr);
 }

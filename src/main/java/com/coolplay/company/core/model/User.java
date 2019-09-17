@@ -76,8 +76,8 @@ public class User extends Sortable {
 	@Column(name = "is_admin")
 	private Integer isAdmin;//"是否是超级用户（0：否， 1：是）"
 
-	@Column(name = "status")
-	private Integer status;//"用户状态（0：正常，1：启用，2：禁用）"
+	@Column(name = "enabled")
+	private Integer enabled;//"用户状态（0：正常，1：启用，2：禁用）"
 
 	@Column(name = "last_password_reset")
 	private Date lastPasswordReset;
@@ -190,15 +190,15 @@ public class User extends Sortable {
 	public Integer getIsAdmin() {
 		return this.isAdmin;
 	}
-		
-	public void setStatus(Integer status) {
-		this.status = status;
+
+	public Integer getEnabled() {
+		return enabled;
 	}
 
-	public Integer getStatus() {
-		return this.status;
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
 	}
-		
+
 	public void setCtime(Date ctime) {
 		this.ctime = ctime;
 	}

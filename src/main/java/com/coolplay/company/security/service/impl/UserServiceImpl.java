@@ -8,6 +8,7 @@ import com.coolplay.company.security.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,5 +53,10 @@ public class UserServiceImpl extends BaseService<User> implements IUserService {
      */
     public String findLoginNameByUserId(Integer userId) {
         return userMapper.findLoginNameByUserId(userId);
+    }
+
+
+    public void updateLastLoginInfoByUserName(String username, Date date, String remoteAddr) {
+        userMapper.updateLastLoginInfoByUserName(username, date, remoteAddr);
     }
 }

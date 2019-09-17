@@ -5,6 +5,7 @@ import com.coolplay.company.security.dto.FunctionDto;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,4 +32,7 @@ public interface UserMapper extends Mapper<User> {
      * @return
      */
     public String findLoginNameByUserId(@Param("userId")Integer userId);
+
+    int updateLastLoginInfoByUserName(@Param("userName") String username, @Param("lastLoginDate") Date lastLoginDate,
+            @Param("remoteAddr") String remoteAddr);
 }
