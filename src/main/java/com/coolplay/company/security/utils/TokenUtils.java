@@ -21,10 +21,10 @@ public class TokenUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenUtils.class);
 
-    @Value("security.token.secret")
+    @Value("${security.token.secret}")
     private String secret;
 
-    @Value("security.token.expiration")
+    @Value("${security.token.expiration}")
     private Long expiration;
 
 

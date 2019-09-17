@@ -35,7 +35,7 @@
 	</sql>
 
 	
-	<select id="find" resultMap="CompanyFunction">
+	<select id="find" resultMap="CompanyFunction" parameterType="java.util.Map">
 	    SELECT <include refid="columns"/> FROM d_company_function 
 		<include refid="findWhere"/>
     </select>

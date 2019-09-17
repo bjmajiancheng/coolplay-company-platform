@@ -2,6 +2,7 @@ package com.coolplay.company.security.security;
 
 import com.coolplay.company.security.utils.TokenUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserCache;
@@ -21,8 +22,10 @@ import java.io.IOException;
  */
 public class HttpAuthenticationTokenFilter extends UsernamePasswordAuthenticationFilter {
 
+    @Value("${security.token.header}")
     private String tokenHeader;
 
+    @Value("${security.token.front}")
     private String frontToken;
 
     private TokenUtils tokenUtils;

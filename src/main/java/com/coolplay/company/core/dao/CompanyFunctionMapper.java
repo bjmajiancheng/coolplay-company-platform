@@ -8,6 +8,8 @@
 package com.coolplay.company.core.dao;
 import com.coolplay.company.core.model.CompanyFunctionModel;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
+
 import java.util.*;
 
 /**
@@ -16,7 +18,7 @@ import java.util.*;
  * @since 1.0
  */
 
-public interface CompanyFunctionMapper {
+public interface CompanyFunctionMapper extends Mapper<CompanyFunctionModel> {
 
 	public List<CompanyFunctionModel> find(Map<String, Object> param);
 

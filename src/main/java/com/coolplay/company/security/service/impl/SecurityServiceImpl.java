@@ -28,6 +28,7 @@ public class SecurityServiceImpl implements ISecurityService {
     @Autowired
     private IRoleService roleService;
 
+    @Autowired
     private RedisCache redisCache;
 
     /**

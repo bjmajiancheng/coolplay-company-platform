@@ -85,9 +85,33 @@
 		<property name="basePackage" value="com.coolplay.company.core.dao"/>
 		<property name="properties">
 			<value>
-				mappers=tk.mapper.mapper.common.Mapper
+				mappers=tk.mybatis.mapper.common.Mapper
 			</value>
 		</property>
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+	</bean>
+
+
+	<aop:aspectj-autoproxy/>
+	<aop:config>
+		<aop:pointcut id="appService" expression="execution(* com.coolplay.company.**.service.*.*(..))"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="appService"/>
+	</aop:config>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="update*" rollback-for="Exception"/>
+			<tx:method name="delete*" rollback-for="Exception"/>
+			<tx:method name="insert*" rollback-for="Exception"/>
+			<tx:method name="select*" read-only="true"/>
+			<tx:method name="find*" read-only="true"/>
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="*"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<bean id="transactionManager"
+		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
 	</bean>
 </beans>
