@@ -6,8 +6,7 @@
  */
 
 package com.coolplay.company.core.dao;
-import com.coolplay.company.core.model.CompanyFunctionModel;
-import org.apache.ibatis.annotations.Param;
+import com.coolplay.company.core.model.UserRoleModel;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.*;
@@ -18,8 +17,8 @@ import java.util.*;
  * @since 1.0
  */
 
-public interface CompanyFunctionMapper extends Mapper<CompanyFunctionModel> {
+public interface UserRoleMapper extends Mapper<UserRoleModel> {
 
-	public List<CompanyFunctionModel> find(Map<String, Object> param);
+	public List<UserRoleModel> find(Map<String, Object> param);
 
 }

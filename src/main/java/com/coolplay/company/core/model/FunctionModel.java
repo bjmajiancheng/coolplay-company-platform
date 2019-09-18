@@ -20,7 +20,7 @@ import javax.persistence.*;
  * @since 1.0
  */
 @Table(name = "d_company_function")
-public class CompanyFunctionModel implements Serializable {
+public class FunctionModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	//columns START
@@ -41,6 +41,9 @@ public class CompanyFunctionModel implements Serializable {
 
 	@Column(name = "action")
 	private String action;//"请求链接"
+
+	@Column(name = "icon")
+	private String icon;//"菜单图标"
 
 	@Column(name = "sort")
 	private Integer sort;//"排序"
@@ -96,7 +99,15 @@ public class CompanyFunctionModel implements Serializable {
 	public String getAction() {
 		return this.action;
 	}
-		
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
 	public void setSort(Integer sort) {
 		this.sort = sort;
 	}

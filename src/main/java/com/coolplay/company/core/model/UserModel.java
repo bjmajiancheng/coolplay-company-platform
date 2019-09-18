@@ -26,7 +26,7 @@ import java.util.Map;
  * @since 1.0
  */
 @Table(name = "d_company_user")
-public class User extends Sortable {
+public class UserModel extends Sortable {
 	private static final long serialVersionUID = 1L;
 
 	//columns START

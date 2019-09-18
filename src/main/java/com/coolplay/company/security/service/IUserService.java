@@ -1,7 +1,7 @@
 package com.coolplay.company.security.service;
 
 import com.coolplay.company.common.baseservice.IBaseService;
-import com.coolplay.company.core.model.User;
+import com.coolplay.company.core.model.UserModel;
 import com.coolplay.company.security.dto.FunctionDto;
 
 import java.util.Date;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by majiancheng on 2019/9/16.
  */
-public interface IUserService extends IBaseService<User> {
+public interface IUserService extends IBaseService<UserModel> {
 
     /**
      * 根据登录名获取用户信息
@@ -18,7 +18,7 @@ public interface IUserService extends IBaseService<User> {
      * @param loginName
      * @return
      */
-    public User findUserByLoginName(String loginName);
+    public UserModel findUserByLoginName(String loginName);
 
     /**
      * 根据用户ID获取用户角色

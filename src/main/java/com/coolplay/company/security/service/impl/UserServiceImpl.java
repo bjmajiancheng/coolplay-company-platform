@@ -2,7 +2,7 @@ package com.coolplay.company.security.service.impl;
 
 import com.coolplay.company.common.baseservice.impl.BaseService;
 import com.coolplay.company.core.dao.UserMapper;
-import com.coolplay.company.core.model.User;
+import com.coolplay.company.core.model.UserModel;
 import com.coolplay.company.security.dto.FunctionDto;
 import com.coolplay.company.security.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.List;
  * Created by majiancheng on 2019/9/16.
  */
 @Service("userService")
-public class UserServiceImpl extends BaseService<User> implements IUserService {
+public class UserServiceImpl extends BaseService<UserModel> implements IUserService {
 
     @Autowired
     private UserMapper userMapper;
@@ -26,7 +26,7 @@ public class UserServiceImpl extends BaseService<User> implements IUserService {
      * @param loginName
      * @return
      */
-    public User findUserByLoginName(String loginName) {
+    public UserModel findUserByLoginName(String loginName) {
         return userMapper.findUserByLoginName(loginName);
     }
 

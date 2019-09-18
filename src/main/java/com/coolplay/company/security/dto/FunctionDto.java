@@ -22,6 +22,8 @@ public class FunctionDto implements Serializable {
 
     private String action;
 
+    private String icon;
+
     private Integer sort;
 
     private Date ctime;
@@ -72,6 +74,14 @@ public class FunctionDto implements Serializable {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public Integer getSort() {

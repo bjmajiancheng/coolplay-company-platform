@@ -1,7 +1,7 @@
 package com.coolplay.company.security.service.impl;
 
 import com.coolplay.company.common.tools.RedisCache;
-import com.coolplay.company.core.model.User;
+import com.coolplay.company.core.model.UserModel;
 import com.coolplay.company.security.constants.SecurityConstant;
 import com.coolplay.company.security.security.SecurityUser;
 import com.coolplay.company.security.service.IRoleService;
@@ -38,7 +38,7 @@ public class SecurityServiceImpl implements ISecurityService {
      * @return
      */
     public SecurityUser loadSecurityUserByLoginName(String loginName) {
-        User user = userService.findUserByLoginName(loginName);
+        UserModel user = userService.findUserByLoginName(loginName);
         if (user == null) {
             return null;
         }

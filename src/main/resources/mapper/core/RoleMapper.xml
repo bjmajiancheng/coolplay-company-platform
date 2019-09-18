@@ -5,7 +5,7 @@
 
 <mapper namespace="com.coolplay.company.core.dao.RoleMapper">
 
-    <resultMap id="CompanyRole" type="com.coolplay.company.core.model.CompanyRoleModel">
+    <resultMap id="CompanyRole" type="com.coolplay.company.core.model.RoleModel">
         <result property="id" column="id"/>
         <result property="roleName" column="role_name"/>
         <result property="status" column="status"/>

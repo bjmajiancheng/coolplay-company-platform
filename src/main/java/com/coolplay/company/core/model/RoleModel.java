@@ -20,7 +20,7 @@ import javax.persistence.*;
  * @since 1.0
  */
 @Table(name = "d_company_role")
-public class CompanyRoleModel implements Serializable {
+public class RoleModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	//columns START

@@ -1,5 +1,6 @@
 package com.coolplay.company.security.security;
 
+import com.coolplay.company.core.model.UserModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -25,7 +26,7 @@ public class SecurityUser extends User {
 
     private Date lastPasswordReset;
 
-    public SecurityUser(com.coolplay.company.core.model.User user,
+    public SecurityUser(UserModel user,
             Collection<GrantedAuthority> userGrantedAuthorities) {
         super(user.getUserName(), user.getPassword(), user.getEnabled() == 1, user.getAccountNonExpired(),
                 user.getCredentialsNonExpired(), user.getAccountNonLocked(), userGrantedAuthorities);
