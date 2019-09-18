@@ -26,9 +26,10 @@ public class SecurityUtil {
         return userId;
     }
 
-    public static UserDetails getCurrentSecurityUser() {
+    public static SecurityUser getCurrentSecurityUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return (UserDetails) principal;
+        if (principal instanceof SecurityUser) return (SecurityUser) principal;
+        return null;
     }
 
     public static String encodeString(String character) {
