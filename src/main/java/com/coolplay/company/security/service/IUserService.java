@@ -3,6 +3,7 @@ package com.coolplay.company.security.service;
 import com.coolplay.company.common.baseservice.IBaseService;
 import com.coolplay.company.core.model.UserModel;
 import com.coolplay.company.security.dto.FunctionDto;
+import com.github.pagehelper.PageInfo;
 
 import java.util.Date;
 import java.util.List;
@@ -45,4 +46,12 @@ public interface IUserService extends IBaseService<UserModel> {
     public String findLoginNameByUserId(Integer userId);
 
     void updateLastLoginInfoByUserName(String username, Date date, String remoteAddr);
+
+    PageInfo<UserModel> selectByFilterAndPage(UserModel userModel, int pageNum,
+            int pageSize);
+
+    List<UserModel> selectByFilter(UserModel userModel);
+
+    public UserModel findUserByUserId(int userId);
+
 }

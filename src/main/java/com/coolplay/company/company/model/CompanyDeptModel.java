@@ -7,12 +7,17 @@
 
 package com.coolplay.company.company.model;
 
+import com.coolplay.company.common.handler.Sortable;
+import org.springframework.data.annotation.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.*;
+import javax.persistence.Transient;
 
 /**
  * @author  shawn
@@ -20,7 +25,7 @@ import javax.persistence.*;
  * @since 1.0
  */
 @Table(name = "d_company_dept")
-public class CompanyDeptModel implements Serializable {
+public class CompanyDeptModel extends Sortable {
 	private static final long serialVersionUID = 1L;
 
 	//columns START
@@ -39,6 +44,14 @@ public class CompanyDeptModel implements Serializable {
 	@Column(name = "c_time")
 	private Date ctime;//"创建时间"
 	//columns END
+
+	@Transient
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date startDate;
+
+	@Transient
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date endDate;
 		
 	public void setId(Integer id) {
 		this.id = id;
@@ -80,5 +93,20 @@ public class CompanyDeptModel implements Serializable {
 		return this.ctime;
 	}
 
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 }
 

@@ -35,4 +35,6 @@ public interface UserMapper extends Mapper<UserModel> {
 
     int updateLastLoginInfoByUserName(@Param("userName") String username, @Param("lastLoginDate") Date lastLoginDate,
             @Param("remoteAddr") String remoteAddr);
+
+    public UserModel findUserByUserId(@Param("userId")int userId);
 }

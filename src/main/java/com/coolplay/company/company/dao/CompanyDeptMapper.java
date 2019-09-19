@@ -7,7 +7,10 @@
 
 package com.coolplay.company.company.dao;
 import com.coolplay.company.company.model.CompanyDeptModel;
+import com.coolplay.company.core.model.RoleFunctionModel;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
+
 import java.util.*;
 
 /**
@@ -16,8 +19,10 @@ import java.util.*;
  * @since 1.0
  */
 
-public interface CompanyDeptMapper {
+public interface CompanyDeptMapper extends Mapper<CompanyDeptModel> {
 
 	public List<CompanyDeptModel> find(Map<String, Object> param);
+
+	public CompanyDeptModel selectById(@Param("id") int id);
 
 }

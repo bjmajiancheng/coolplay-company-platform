@@ -82,7 +82,7 @@
 	</bean>
 
 	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.coolplay.company.core.dao"/>
+		<property name="basePackage" value="com.coolplay.company.core.dao,com.coolplay.company.company.dao"/>
 		<property name="properties">
 			<value>
 				mappers=tk.mybatis.mapper.common.Mapper

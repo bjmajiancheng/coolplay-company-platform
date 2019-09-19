@@ -36,6 +36,9 @@
         ORDER BY f.`sort`
     </select>
 
-
+    <select id="selectById" resultMap="CompanyRole">
+        SELECT <include refid="columns"/> FROM d_company_role
+        WHERE id = #{id}
+    </select>
 </mapper>
 

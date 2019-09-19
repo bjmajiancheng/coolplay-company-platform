@@ -32,6 +32,9 @@
 			<if test="action != null">
 				AND action = #{action}
 			</if>
+			<if test="id != null">
+				AND id = #{id}
+			</if>
 	    </where>
 	</sql>
 
@@ -41,6 +44,10 @@
 		<include refid="findWhere"/>
     </select>
 
+	<select id="selectById" resultMap="CompanyFunction">
+		SELECT <include refid="columns"/> FROM d_company_function
+		<include refid="findWhere"/>
+	</select>
 	
 </mapper>
 

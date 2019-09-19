@@ -7,7 +7,10 @@
 
 package com.coolplay.company.company.dao;
 import com.coolplay.company.company.model.CompanyUserOptLogModel;
+import com.coolplay.company.core.model.RoleFunctionModel;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
+
 import java.util.*;
 
 /**
@@ -16,7 +19,7 @@ import java.util.*;
  * @since 1.0
  */
 
-public interface CompanyUserOptLogMapper {
+public interface CompanyUserOptLogMapper extends Mapper<CompanyUserOptLogModel> {
 
 	public List<CompanyUserOptLogModel> find(Map<String, Object> param);
 

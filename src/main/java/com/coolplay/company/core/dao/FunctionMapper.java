@@ -6,19 +6,23 @@
  */
 
 package com.coolplay.company.core.dao;
+
 import com.coolplay.company.core.model.FunctionModel;
+import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.*;
 
 /**
- * @author  davdian
+ * @author davdian
  * @version 1.0
  * @since 1.0
  */
 
 public interface FunctionMapper extends Mapper<FunctionModel> {
 
-	public List<FunctionModel> find(Map<String, Object> param);
+    public List<FunctionModel> find(Map<String, Object> param);
+
+    public FunctionModel selectById(@Param("id") int id);
 
 }

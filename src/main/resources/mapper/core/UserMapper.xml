@@ -62,4 +62,11 @@
         update d_company_user set last_login_time=#{lastLoginDate},last_login_ip=#{remoteAddr} where user_name=#{userName}
     </update>
 
+    <select id="findUserByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="columns"/>
+        FROM d_company_user
+        WHERE user_id = #{userId}
+    </select>
+
 </mapper>

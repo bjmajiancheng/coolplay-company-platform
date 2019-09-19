@@ -88,6 +88,10 @@
 		<include refid="findWhere"/>
     </select>
 
+	<select id="findCompanyById" resultMap="Company">
+		SELECT <include refid="columns"/> FROM d_company where id = #{id}
+	</select>
+
 	
 </mapper>
 

@@ -7,6 +7,8 @@
 
 package com.coolplay.company.core.model;
 
+import com.coolplay.company.common.handler.Sortable;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -20,7 +22,7 @@ import javax.persistence.*;
  * @since 1.0
  */
 @Table(name = "d_company_role")
-public class RoleModel implements Serializable {
+public class RoleModel extends Sortable {
 	private static final long serialVersionUID = 1L;
 
 	//columns START
