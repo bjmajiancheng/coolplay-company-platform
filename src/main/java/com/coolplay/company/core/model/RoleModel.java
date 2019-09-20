@@ -8,6 +8,7 @@
 package com.coolplay.company.core.model;
 
 import com.coolplay.company.common.handler.Sortable;
+import org.springframework.data.annotation.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.*;
+import javax.persistence.Transient;
 
 /**
  * @author  shawn
@@ -38,6 +40,9 @@ public class RoleModel extends Sortable {
 	@Column(name = "c_time")
 	private Date ctime;//"创建时间"
 	//columns END
+
+	@Transient
+	private Integer userId;//用户ID
 		
 	public void setId(Integer id) {
 		this.id = id;
@@ -71,5 +76,12 @@ public class RoleModel extends Sortable {
 		return this.ctime;
 	}
 
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 }
 

@@ -1,6 +1,7 @@
 package com.coolplay.company.core.dao;
 
 import com.coolplay.company.core.model.RoleModel;
+import com.coolplay.company.core.model.UserRoleModel;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 

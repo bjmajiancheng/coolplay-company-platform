@@ -4,6 +4,7 @@ import com.coolplay.company.common.baseservice.IBaseService;
 import com.coolplay.company.company.model.CompanyDeptModel;
 import com.coolplay.company.core.model.RoleModel;
 import com.coolplay.company.core.model.UserModel;
+import com.coolplay.company.core.model.UserRoleModel;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
@@ -24,4 +25,6 @@ public interface IRoleService extends IBaseService<RoleModel> {
     public List<RoleModel> selectByFilter(RoleModel roleModel);
 
     public RoleModel selectById(int id);
+
+    public Map<Integer, List<UserRoleModel>> findUserRoles(List<Integer> userIds);
 }

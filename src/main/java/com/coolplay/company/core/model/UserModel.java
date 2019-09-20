@@ -37,7 +37,7 @@ public class UserModel extends Sortable {
 	@Column(name = "company_id")
 	private Integer companyId;//"企业ID"
 
-	@Column(name = "login_name")
+	@Column(name = "user_name")
 	@NotEmpty
 	@Size(min = 4, max = 20)
 	private String userName;//"用户名"
@@ -47,7 +47,7 @@ public class UserModel extends Sortable {
 	@JsonIgnore
 	private String password;//"密码"
 
-	@Column(name = "login_name")
+	@Column(name = "display_name")
 	@NotEmpty
 	@Size(min = 4, max = 20)
 	private String displayName;//"显示名称"
@@ -86,6 +86,9 @@ public class UserModel extends Sortable {
 	private Date ctime;//"创建时间"
 
 	//columns END
+
+	@Transient
+	private String roleName;
 		
 	public void setId(Integer id) {
 		this.id = id;
@@ -213,6 +216,14 @@ public class UserModel extends Sortable {
 
 	public void setLastPasswordReset(Date lastPasswordReset) {
 		this.lastPasswordReset = lastPasswordReset;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 }
 

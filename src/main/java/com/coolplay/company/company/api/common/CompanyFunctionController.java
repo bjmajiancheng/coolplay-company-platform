@@ -1,5 +1,6 @@
 package com.coolplay.company.company.api.common;
 
+import com.coolplay.company.common.utils.PageConvertUtil;
 import com.coolplay.company.common.utils.ResponseUtil;
 import com.coolplay.company.common.utils.Result;
 import com.coolplay.company.company.model.CompanyDeptModel;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Map;
 
 /**
  * Created by majiancheng on 2019/9/19.
@@ -24,13 +27,13 @@ public class CompanyFunctionController {
 
     @ResponseBody
     @RequestMapping("list")
-    public Result list(FunctionModel functionModel,
-            @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-            @RequestParam(value = "pageSize", required = false, defaultValue = "15") int pageSize) {
+    public Map list(FunctionModel functionModel,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "rows", required = false, defaultValue = "15") int pageSize) {
         PageInfo<FunctionModel> pageInfo = functionService
                 .selectByFilterAndPage(functionModel, pageNum, pageSize);
 
-        return ResponseUtil.success(pageInfo);
+        return PageConvertUtil.grid(pageInfo);
     }
 
 

@@ -7,6 +7,7 @@
 
 package com.coolplay.company.core.dao;
 import com.coolplay.company.core.model.UserRoleModel;
+import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.*;
@@ -20,5 +21,7 @@ import java.util.*;
 public interface UserRoleMapper extends Mapper<UserRoleModel> {
 
 	public List<UserRoleModel> find(Map<String, Object> param);
+
+	public List<UserRoleModel> findUserRoleByUserIds(@Param("userIds") List<Integer> userIds);
 
 }

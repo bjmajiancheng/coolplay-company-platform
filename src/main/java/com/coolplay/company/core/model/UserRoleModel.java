@@ -31,6 +31,11 @@ public class UserRoleModel implements Serializable {
 	private Integer roleId;//"角色ID"
 
 	//columns END
+	@Transient
+	private String roleName;//"角色名称"
+
+	@Transient
+	private Integer status;//"是否启用（0：不启用，1：启用）"
 		
 	public void setUserId(Integer userId) {
 		this.userId = userId;
@@ -48,5 +53,20 @@ public class UserRoleModel implements Serializable {
 		return this.roleId;
 	}
 
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 }
 

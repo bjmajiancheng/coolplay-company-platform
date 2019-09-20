@@ -7,6 +7,7 @@ import com.coolplay.company.security.dto.FunctionDto;
 import com.coolplay.company.security.service.IUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,6 @@ public class UserServiceImpl extends BaseService<UserModel> implements IUserServ
         return userMapper.findLoginNameByUserId(userId);
     }
 
-
     public void updateLastLoginInfoByUserName(String username, Date date, String remoteAddr) {
         userMapper.updateLastLoginInfoByUserName(username, date, remoteAddr);
     }
@@ -68,6 +68,11 @@ public class UserServiceImpl extends BaseService<UserModel> implements IUserServ
     public PageInfo<UserModel> selectByFilterAndPage(UserModel userModel, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<UserModel> list = selectByFilter(userModel);
+        if(CollectionUtils.isNotEmpty(list)) {
+            for (UserModel user : list) {
+                user.setPassword("");
+            }
+        }
         return new PageInfo<>(list);
     }
 
@@ -75,21 +80,22 @@ public class UserServiceImpl extends BaseService<UserModel> implements IUserServ
     public List<UserModel> selectByFilter(UserModel userModel) {
         Example example = new Example(UserModel.class);
         Example.Criteria criteria = example.createCriteria();
-        if(StringUtils.isNotEmpty(userModel.getContactPhone())) {
+        if (StringUtils.isNotEmpty(userModel.getContactPhone())) {
             criteria.andEqualTo("contactPhone", userModel.getContactPhone());
         }
-        if(StringUtils.isNotEmpty(userModel.getDisplayName())) {
+        if (StringUtils.isNotEmpty(userModel.getDisplayName())) {
             criteria.andLike("displayName", userModel.getDisplayName());
         }
-        if(StringUtils.isNotEmpty(userModel.getSortWithOutOrderBy())) {
+        if (StringUtils.isNotEmpty(userModel.getSortWithOutOrderBy())) {
             example.setOrderByClause(userModel.getSortWithOutOrderBy());
         }
         return getMapper().selectByExample(example);
     }
 
-
     @Override
     public UserModel findUserByUserId(int userId) {
-        return userMapper.findUserByUserId(userId);
+        UserModel userModel = userMapper.findUserByUserId(userId);
+        userModel.setPassword("");
+        return userModel;
     }
 }

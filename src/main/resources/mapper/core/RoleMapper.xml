@@ -40,5 +40,6 @@
         SELECT <include refid="columns"/> FROM d_company_role
         WHERE id = #{id}
     </select>
+
 </mapper>
 

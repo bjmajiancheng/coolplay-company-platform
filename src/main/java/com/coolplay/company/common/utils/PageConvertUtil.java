@@ -14,27 +14,27 @@ public class PageConvertUtil {
     public static Map grid(PageInfo<?> info) {
         Map map = new HashMap();
         map.put("total", info.getTotal());
-        map.put("data", info.getList());
+        map.put("rows", info.getList());
         return map;
     }
 
     public static Map grid(SimplePageInfo<?> info) {
         Map map = new HashMap();
         map.put("total", info.getTotal());
-        map.put("data", info.getList());
+        map.put("rows", info.getList());
         return map;
     }
 
     public static Map grid(List<?> list) {
         Map map = new HashMap();
         map.put("total", list.size());
-        map.put("data", list);
+        map.put("rows", list);
         return map;
     }
 
     public static Map chart(List<?> list) {
         Map map = new HashMap();
-        map.put("data", list);
+        map.put("rows", list);
         return map;
     }
 }

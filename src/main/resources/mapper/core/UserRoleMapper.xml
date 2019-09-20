@@ -10,6 +10,14 @@
         <result property="roleId" column="role_id"/>
     </resultMap>
 
+	<resultMap id="CompanyUserRoleAllInfo" type="com.coolplay.company.core.model.UserRoleModel">
+		<result property="userId" column="user_id"/>
+		<result property="roleId" column="role_id"/>
+		<result property="roleName" column="role_name"/>
+		<result property="status" column="status"/>
+	</resultMap>
+
+
 	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
@@ -28,6 +36,15 @@
 		<include refid="findWhere"/>
     </select>
 
+	<select id="findUserRoleByUserIds" resultMap="CompanyUserRoleAllInfo">
+		SELECT r.id AS role_id, r.role_name, r.status, ur.user_id
+		FROM d_company_role r
+		INNER JOIN d_company_user_role ur ON r.id = ur.role_id
+		WHERE r.status = 1 AND ur.user_id IN
+		<foreach collection="userIds" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
 	
 </mapper>
 
