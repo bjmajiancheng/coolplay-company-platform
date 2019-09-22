@@ -7,18 +7,24 @@
 
     <resultMap id="CompanyRoleFunction" type="com.coolplay.company.core.model.RoleFunctionModel">
         <result property="roleId" column="role_id"/>
-        <result property="funcationId" column="funcation_id"/>
+        <result property="functionId" column="function_id"/>
     </resultMap>
 
 	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-        role_id ,funcation_id 
+        role_id ,function_id
 	    ]]>
 	</sql>
 
 	<sql id="findWhere">
 	    <where>
+			<if test="roleId != null">
+				AND role_id = #{roleId}
+			</if>
+			<if test="functionId != null">
+				AND function_id = #{functionId}
+			</if>
 	    </where>
 	</sql>
 

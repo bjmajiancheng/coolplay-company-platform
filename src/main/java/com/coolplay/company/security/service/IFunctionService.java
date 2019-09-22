@@ -1,6 +1,7 @@
 package com.coolplay.company.security.service;
 
 import com.coolplay.company.common.baseservice.IBaseService;
+import com.coolplay.company.common.utils.TreeNode;
 import com.coolplay.company.core.model.FunctionModel;
 import com.coolplay.company.core.model.RoleModel;
 import com.github.pagehelper.PageInfo;
@@ -17,4 +18,6 @@ public interface IFunctionService extends IBaseService<FunctionModel> {
     public List<FunctionModel> selectByFilter(FunctionModel functionModel);
 
     public FunctionModel selectById(int id);
+
+    List<TreeNode> getFunctionTreeNodes(FunctionModel functionModel);
 }

@@ -2,8 +2,10 @@ package com.coolplay.company.security.service.impl;
 
 import com.coolplay.company.common.baseservice.impl.BaseService;
 import com.coolplay.company.company.model.CompanyDeptModel;
+import com.coolplay.company.core.dao.RoleFunctionMapper;
 import com.coolplay.company.core.dao.RoleMapper;
 import com.coolplay.company.core.dao.UserRoleMapper;
+import com.coolplay.company.core.model.RoleFunctionModel;
 import com.coolplay.company.core.model.RoleModel;
 import com.coolplay.company.core.model.UserRoleModel;
 import com.coolplay.company.security.service.IRoleService;
@@ -28,6 +30,9 @@ public class RoleServiceImpl extends BaseService<RoleModel> implements IRoleServ
 
     @Autowired
     private UserRoleMapper userRoleMapper;
+
+    @Autowired
+    private RoleFunctionMapper roleFunctionMapper;
 
     @Override
     public List<Map> findRoleMatchUpFunctions() {
@@ -83,5 +88,15 @@ public class RoleServiceImpl extends BaseService<RoleModel> implements IRoleServ
         }
 
         return roleModelMap;
+    }
+
+    @Override
+    public List<Integer> getUserIdsByRoleId(int roleId) {
+        return userRoleMapper.getUserIdsByRoleId(roleId);
+    }
+
+    @Override
+    public List<RoleFunctionModel> getRoleFunctionByRoleId(int roleId) {
+        return roleFunctionMapper.find(Collections.singletonMap("roleId", roleId));
     }
 }

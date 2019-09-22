@@ -1,6 +1,7 @@
 package com.coolplay.company.security.service.impl;
 
 import com.coolplay.company.common.baseservice.impl.BaseService;
+import com.coolplay.company.common.utils.TreeNode;
 import com.coolplay.company.core.dao.FunctionMapper;
 import com.coolplay.company.core.model.FunctionModel;
 import com.coolplay.company.core.model.RoleModel;
@@ -50,5 +51,10 @@ public class FunctionServiceImpl extends BaseService<FunctionModel> implements I
     @Override
     public FunctionModel selectById(int id) {
         return functionMapper.selectById(id);
+    }
+
+    @Override
+    public List<TreeNode> getFunctionTreeNodes(FunctionModel functionModel) {
+        return functionMapper.selectFunctionTreeNodes(functionModel);
     }
 }

@@ -45,6 +45,10 @@
 			#{item}
 		</foreach>
 	</select>
+
+	<select id="getUserIdsByRoleId" resultType="java.lang.Integer">
+		SELECT user_id FROM d_company_user_role WHERE user_id = #{user_id}
+	</select>
 	
 </mapper>
 

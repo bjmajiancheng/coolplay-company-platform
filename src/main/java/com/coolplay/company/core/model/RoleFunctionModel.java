@@ -27,8 +27,8 @@ public class RoleFunctionModel implements Serializable {
 	@Column(name = "role_id")
 	private Integer roleId;//"角色ID"
 
-	@Column(name = "funcation_id")
-	private Integer funcationId;//"菜单ID"
+	@Column(name = "function_id")
+	private Integer functionId;//"菜单ID"
 	//columns END
 		
 	public void setRoleId(Integer roleId) {
@@ -39,12 +39,12 @@ public class RoleFunctionModel implements Serializable {
 		return this.roleId;
 	}
 		
-	public void setFuncationId(Integer funcationId) {
-		this.funcationId = funcationId;
+	public void setFunctionId(Integer funcationId) {
+		this.functionId = funcationId;
 	}
 
-	public Integer getFuncationId() {
-		return this.funcationId;
+	public Integer getFunctionId() {
+		return this.functionId;
 	}
 
 }

@@ -2,6 +2,7 @@ package com.coolplay.company.security.service;
 
 import com.coolplay.company.common.baseservice.IBaseService;
 import com.coolplay.company.company.model.CompanyDeptModel;
+import com.coolplay.company.core.model.RoleFunctionModel;
 import com.coolplay.company.core.model.RoleModel;
 import com.coolplay.company.core.model.UserModel;
 import com.coolplay.company.core.model.UserRoleModel;
@@ -27,4 +28,8 @@ public interface IRoleService extends IBaseService<RoleModel> {
     public RoleModel selectById(int id);
 
     public Map<Integer, List<UserRoleModel>> findUserRoles(List<Integer> userIds);
+
+    public List<Integer> getUserIdsByRoleId(int roleId);
+
+    public List<RoleFunctionModel> getRoleFunctionByRoleId(int roleId);
 }

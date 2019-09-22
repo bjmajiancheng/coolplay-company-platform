@@ -16,7 +16,6 @@ import java.util.*;
  * @version 1.0
  * @since 1.0
  */
-
 public interface RoleFunctionMapper extends Mapper<RoleFunctionModel> {
 
 	public List<RoleFunctionModel> find(Map<String, Object> param);

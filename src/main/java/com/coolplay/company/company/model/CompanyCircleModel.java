@@ -58,6 +58,7 @@ public class CompanyCircleModel extends Sortable {
 
 	@Column(name = "c_time")
 	private Date ctime;//"创建时间"
+
 	//columns END
 		
 	public void setId(Integer id) {

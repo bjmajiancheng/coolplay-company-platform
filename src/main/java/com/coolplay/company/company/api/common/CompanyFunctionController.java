@@ -10,6 +10,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,7 +27,7 @@ public class CompanyFunctionController {
     private IFunctionService functionService;
 
     @ResponseBody
-    @RequestMapping("list")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Map list(FunctionModel functionModel,
             @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
             @RequestParam(value = "rows", required = false, defaultValue = "15") int pageSize) {
@@ -44,7 +45,7 @@ public class CompanyFunctionController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("getCompanyFunction")
+    @RequestMapping(value = "/getCompanyFunction", method = RequestMethod.GET)
     public Result getCompanyFunction(@RequestParam("id") int id) {
         FunctionModel functionModel = functionService.selectById(id);
 
@@ -59,7 +60,7 @@ public class CompanyFunctionController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("addCompanyFunction")
+    @RequestMapping(value = "/addCompanyFunction", method = RequestMethod.POST)
     public Result addCompanyFunction(FunctionModel functionModel) {
         int addCnt = functionService.save(functionModel);
 
@@ -73,7 +74,7 @@ public class CompanyFunctionController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("updateCompanyFunction")
+    @RequestMapping(value = "/updateCompanyFunction", method = RequestMethod.POST)
     public Result updateCompanyFunction(FunctionModel functionModel) {
         int updateCnt = functionService.updateNotNull(functionModel);
 
@@ -88,7 +89,7 @@ public class CompanyFunctionController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("disableCompanyFunction")
+    @RequestMapping(value = "/disableCompanyFunction", method = RequestMethod.GET)
     public Result disableCompanyFunction(@RequestParam("id") int id, @RequestParam("status") int status) {
         FunctionModel functionModel = new FunctionModel();
         functionModel.setId(id);
@@ -97,4 +98,11 @@ public class CompanyFunctionController {
 
         return ResponseUtil.success();
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/treeNodes", method = RequestMethod.POST)
+    public Object treeNodes(FunctionModel functionModel) {
+        return functionService.getFunctionTreeNodes(functionModel);
+    }
+
 }

@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,7 +26,7 @@ public class CompanyDeptController {
     private ICompanyDeptService companyDeptService;
 
     @ResponseBody
-    @RequestMapping("list")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Map list(CompanyDeptModel companyDeptModel,
             @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
             @RequestParam(value = "rows", required = false, defaultValue = "15") int pageSize) {
@@ -42,7 +43,7 @@ public class CompanyDeptController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("getCompanyDept")
+    @RequestMapping(value = "/getCompanyDept", method = RequestMethod.GET)
     public Result getCompanyDept(@RequestParam("id") int id) {
         CompanyDeptModel companyDeptModel = companyDeptService.selectById(id);
 
@@ -57,7 +58,7 @@ public class CompanyDeptController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("disableCompanyDept")
+    @RequestMapping(value = "/disableCompanyDept", method = RequestMethod.GET)
     public Result disableCompanyDept(@RequestParam("id") int id, @RequestParam("status") int status) {
         CompanyDeptModel companyDeptModel = new CompanyDeptModel();
         companyDeptModel.setId(id);
@@ -74,7 +75,7 @@ public class CompanyDeptController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("addCompanyDept")
+    @RequestMapping(value = "/addCompanyDept", method = RequestMethod.POST)
     public Result addCompanyDept(CompanyDeptModel companyDeptModel) {
         int addCnt = companyDeptService.save(companyDeptModel);
 

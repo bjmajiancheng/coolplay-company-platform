@@ -25,7 +25,7 @@ public class CompanyController {
     private ICompanyService companyService;
 
     @ResponseBody
-    @RequestMapping(value="companyInfo", method = RequestMethod.GET)
+    @RequestMapping(value="/companyInfo", method = RequestMethod.GET)
     public Result companyInfo(HttpServletRequest request) {
         SecurityUser securityUser = SecurityUtil.getCurrentSecurityUser();
 
@@ -35,7 +35,7 @@ public class CompanyController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "updateCompany", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateCompany", method = RequestMethod.POST)
     public Result updateCompany(CompanyModel companyModel) {
         int cnt = companyService.updateNotNull(companyModel);
 

@@ -6,6 +6,7 @@ import com.coolplay.company.common.utils.Result;
 import com.coolplay.company.core.model.RoleModel;
 import com.coolplay.company.core.model.UserModel;
 import com.coolplay.company.core.model.UserRoleModel;
+import com.coolplay.company.security.security.CoolplayUserCache;
 import com.coolplay.company.security.service.IRoleService;
 import com.coolplay.company.security.service.IUserService;
 import com.github.pagehelper.PageInfo;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +36,9 @@ public class CompanyUserController {
 
     @Autowired
     private IRoleService roleService;
+
+    @Autowired
+    private CoolplayUserCache coolplayUserCache;
 
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -85,6 +90,8 @@ public class CompanyUserController {
         userModel.setEnabled(enabled);
         int updateCnt = userService.updateNotNull(userModel);
 
+        coolplayUserCache.removeUserFromCacheByUserId(userId);
+
         return ResponseUtil.success();
     }
 
@@ -93,6 +100,20 @@ public class CompanyUserController {
     public Result updateUser(UserModel userModel) {
         int updateCnt = userService.updateNotNull(userModel);
         return ResponseUtil.success();
+    }
+
+    /**
+     * 获取用户角色信息
+     *
+     * @param userId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getUserRoles", method = RequestMethod.GET)
+    public Result getUserRoles(@RequestParam("userId") int userId) {
+        Map<Integer, List<UserRoleModel>> userRoleMap = roleService.findUserRoles(Collections.singletonList(userId));
+
+        return ResponseUtil.success(userRoleMap.get(userId));
     }
 
 

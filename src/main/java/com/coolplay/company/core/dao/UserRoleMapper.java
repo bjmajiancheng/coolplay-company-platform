@@ -24,4 +24,6 @@ public interface UserRoleMapper extends Mapper<UserRoleModel> {
 
 	public List<UserRoleModel> findUserRoleByUserIds(@Param("userIds") List<Integer> userIds);
 
+	public List<Integer> getUserIdsByRoleId(@Param("roleId")int roleId);
+
 }
