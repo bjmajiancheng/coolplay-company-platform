@@ -7,6 +7,7 @@
 
 package com.coolplay.company.core.dao;
 import com.coolplay.company.core.model.RoleFunctionModel;
+import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.*;
@@ -19,5 +20,7 @@ import java.util.*;
 public interface RoleFunctionMapper extends Mapper<RoleFunctionModel> {
 
 	public List<RoleFunctionModel> find(Map<String, Object> param);
+
+	public int delByRoleId(@Param("roleId") int roleId);
 
 }

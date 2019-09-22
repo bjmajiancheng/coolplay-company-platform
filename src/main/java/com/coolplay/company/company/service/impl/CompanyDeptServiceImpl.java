@@ -42,6 +42,9 @@ public class CompanyDeptServiceImpl extends BaseService<CompanyDeptModel> implem
         if(companyDeptModel.getEndDate() != null) {
             criteria.andLessThanOrEqualTo("ctime", companyDeptModel.getEndDate());
         }
+        if(companyDeptModel.getCompanyId() != null) {
+            criteria.andEqualTo(companyDeptModel.getCompanyId());
+        }
         if(StringUtils.isNotEmpty(companyDeptModel.getSortWithOutOrderBy())) {
             example.setOrderByClause(companyDeptModel.getSortWithOutOrderBy());
         }

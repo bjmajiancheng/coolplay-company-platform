@@ -32,4 +32,6 @@ public interface IRoleService extends IBaseService<RoleModel> {
     public List<Integer> getUserIdsByRoleId(int roleId);
 
     public List<RoleFunctionModel> getRoleFunctionByRoleId(int roleId);
+
+    List<RoleModel> find(Map<String, Object> param);
 }

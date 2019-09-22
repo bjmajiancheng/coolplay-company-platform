@@ -37,10 +37,10 @@ public class FunctionServiceImpl extends BaseService<FunctionModel> implements I
         Example.Criteria criteria = example.createCriteria();
 
         if (StringUtils.isNotEmpty(functionModel.getFunctionName())) {
-            criteria.andLike("functionName", functionModel.getFunctionName());
+            criteria.andLike("functionName", "%" + functionModel.getFunctionName() + "%");
         }
         if (StringUtils.isNotEmpty(functionModel.getAction())) {
-            criteria.andLike("action", functionModel.getAction());
+            criteria.andLike("action", "%" + functionModel.getAction() + "%");
         }
         if (StringUtils.isNotEmpty(functionModel.getSortWithOutOrderBy())) {
             example.setOrderByClause(functionModel.getSortWithOutOrderBy());

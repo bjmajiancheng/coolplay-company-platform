@@ -14,8 +14,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.persistence.*;
+import javax.persistence.Id;
 import javax.persistence.Transient;
 
 /**
@@ -28,11 +30,15 @@ public class RoleModel extends Sortable {
 	private static final long serialVersionUID = 1L;
 
 	//columns START
-	@Column(name = "id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;//"主键"
 
 	@Column(name = "role_name")
 	private String roleName;//"角色名称"
+
+	@Column(name = "company_id")
+	private Integer companyId;//"公司ID"
 
 	@Column(name = "status")
 	private Integer status;//"是否启用（0：不启用，1：启用）"
@@ -42,7 +48,7 @@ public class RoleModel extends Sortable {
 	//columns END
 
 	@Transient
-	private Integer userId;//用户ID
+	private List<Integer> functionIds;
 		
 	public void setId(Integer id) {
 		this.id = id;
@@ -59,7 +65,15 @@ public class RoleModel extends Sortable {
 	public String getRoleName() {
 		return this.roleName;
 	}
-		
+
+	public Integer getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
+	}
+
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
@@ -76,12 +90,12 @@ public class RoleModel extends Sortable {
 		return this.ctime;
 	}
 
-	public Integer getUserId() {
-		return userId;
+	public List<Integer> getFunctionIds() {
+		return functionIds;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setFunctionIds(List<Integer> functionIds) {
+		this.functionIds = functionIds;
 	}
 }
 

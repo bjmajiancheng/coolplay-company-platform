@@ -3,12 +3,14 @@ package com.coolplay.company.company.api.common;
 import com.coolplay.company.common.utils.PageConvertUtil;
 import com.coolplay.company.common.utils.ResponseUtil;
 import com.coolplay.company.common.utils.Result;
+import com.coolplay.company.company.service.ICompanyUserRoleService;
 import com.coolplay.company.core.model.RoleModel;
 import com.coolplay.company.core.model.UserModel;
 import com.coolplay.company.core.model.UserRoleModel;
 import com.coolplay.company.security.security.CoolplayUserCache;
 import com.coolplay.company.security.service.IRoleService;
 import com.coolplay.company.security.service.IUserService;
+import com.coolplay.company.security.utils.SecurityUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,9 @@ public class CompanyUserController {
 
     @Autowired
     private CoolplayUserCache coolplayUserCache;
+
+    @Autowired
+    private ICompanyUserRoleService companyUserRoleService;
 
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -78,7 +83,10 @@ public class CompanyUserController {
     @RequestMapping(value="/getUser", method = RequestMethod.GET)
     public Result getUser(@RequestParam("userId") int userId) {
         UserModel userModel = userService.findUserByUserId(userId);
-
+        List<UserRoleModel> userRoleModels = userService.selectUserRoleByUserId(userId);
+        if(CollectionUtils.isNotEmpty(userRoleModels)) {
+            userModel.setRoleId(userRoleModels.get(0).getRoleId());
+        }
         return ResponseUtil.success(userModel);
     }
 
@@ -99,6 +107,27 @@ public class CompanyUserController {
     @RequestMapping(value="/updateUser", method = RequestMethod.POST)
     public Result updateUser(UserModel userModel) {
         int updateCnt = userService.updateNotNull(userModel);
+
+        int delCnt = companyUserRoleService.deleteByUserId(userModel.getId());
+        UserRoleModel userRoleModel = new UserRoleModel();
+        userRoleModel.setUserId(userModel.getId());
+        userRoleModel.setRoleId(userModel.getRoleId());
+        companyUserRoleService.saveNotNull(userRoleModel);
+
+        return ResponseUtil.success();
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/saveUser", method = RequestMethod.POST)
+    public Result saveUser(UserModel userModel) {
+        userModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
+        int saveCnt = userService.saveNotNull(userModel);
+
+        UserRoleModel userRoleModel = new UserRoleModel();
+        userRoleModel.setUserId(userModel.getId());
+        userRoleModel.setRoleId(userModel.getRoleId());
+        companyUserRoleService.saveNotNull(userRoleModel);
+
         return ResponseUtil.success();
     }
 

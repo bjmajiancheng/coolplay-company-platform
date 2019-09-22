@@ -52,8 +52,17 @@ public class RoleServiceImpl extends BaseService<RoleModel> implements IRoleServ
         Example.Criteria criteria = example.createCriteria();
 
         if (StringUtils.isNotEmpty(roleModel.getRoleName())) {
-            criteria.andGreaterThanOrEqualTo("roleName", roleModel.getRoleName());
+            criteria.andLike("roleName", "%" + roleModel.getRoleName() + "%");
         }
+
+        if (roleModel.getCompanyId() != null) {
+            criteria.andEqualTo("companyId", roleModel.getCompanyId());
+        }
+
+        if (roleModel.getStatus() != null) {
+            criteria.andEqualTo("status", roleModel.getStatus());
+        }
+
         if (StringUtils.isNotEmpty(roleModel.getSortWithOutOrderBy())) {
             example.setOrderByClause(roleModel.getSortWithOutOrderBy());
         }
@@ -98,5 +107,10 @@ public class RoleServiceImpl extends BaseService<RoleModel> implements IRoleServ
     @Override
     public List<RoleFunctionModel> getRoleFunctionByRoleId(int roleId) {
         return roleFunctionMapper.find(Collections.singletonMap("roleId", roleId));
+    }
+
+    @Override
+    public List<RoleModel> find(Map<String, Object> param) {
+        return roleMapper.find(param);
     }
 }

@@ -34,6 +34,9 @@
 		<include refid="findWhere"/>
     </select>
 
+	<update id="delByRoleId">
+		DELETE FROM d_company_role_function WHERE role_id = #{roleId}
+	</update>
 	
 </mapper>
 

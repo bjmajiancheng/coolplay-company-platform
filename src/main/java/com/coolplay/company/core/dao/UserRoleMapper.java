@@ -26,4 +26,5 @@ public interface UserRoleMapper extends Mapper<UserRoleModel> {
 
 	public List<Integer> getUserIdsByRoleId(@Param("roleId")int roleId);
 
+	public int deleteByUserId(@Param("userId") Integer userId);
 }

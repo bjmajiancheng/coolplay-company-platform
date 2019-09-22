@@ -68,7 +68,7 @@
         SELECT
         <include refid="columns"/>
         FROM d_company_user
-        WHERE user_id = #{userId}
+        WHERE id = #{userId}
     </select>
 
 </mapper>

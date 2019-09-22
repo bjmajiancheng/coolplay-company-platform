@@ -2,6 +2,7 @@ package com.coolplay.company.security.service;
 
 import com.coolplay.company.common.baseservice.IBaseService;
 import com.coolplay.company.core.model.UserModel;
+import com.coolplay.company.core.model.UserRoleModel;
 import com.coolplay.company.security.dto.FunctionDto;
 import com.github.pagehelper.PageInfo;
 
@@ -54,4 +55,5 @@ public interface IUserService extends IBaseService<UserModel> {
 
     public UserModel findUserByUserId(int userId);
 
+    public List<UserRoleModel> selectUserRoleByUserId(int userId);
 }

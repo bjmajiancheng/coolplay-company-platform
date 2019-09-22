@@ -2,7 +2,9 @@ package com.coolplay.company.security.service.impl;
 
 import com.coolplay.company.common.baseservice.impl.BaseService;
 import com.coolplay.company.core.dao.UserMapper;
+import com.coolplay.company.core.dao.UserRoleMapper;
 import com.coolplay.company.core.model.UserModel;
+import com.coolplay.company.core.model.UserRoleModel;
 import com.coolplay.company.security.dto.FunctionDto;
 import com.coolplay.company.security.service.IUserService;
 import com.github.pagehelper.PageHelper;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +27,9 @@ public class UserServiceImpl extends BaseService<UserModel> implements IUserServ
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     /**
      * 根据登录名获取用户信息
@@ -84,7 +90,10 @@ public class UserServiceImpl extends BaseService<UserModel> implements IUserServ
             criteria.andEqualTo("contactPhone", userModel.getContactPhone());
         }
         if (StringUtils.isNotEmpty(userModel.getDisplayName())) {
-            criteria.andLike("displayName", userModel.getDisplayName());
+            criteria.andLike("displayName", "%" + userModel.getDisplayName() + "%");
+        }
+        if (StringUtils.isNotEmpty(userModel.getUserName())) {
+            criteria.andLike("userName", "%" + userModel.getUserName() + "%");
         }
         if (StringUtils.isNotEmpty(userModel.getSortWithOutOrderBy())) {
             example.setOrderByClause(userModel.getSortWithOutOrderBy());
@@ -97,5 +106,11 @@ public class UserServiceImpl extends BaseService<UserModel> implements IUserServ
         UserModel userModel = userMapper.findUserByUserId(userId);
         userModel.setPassword("");
         return userModel;
+    }
+
+
+    @Override
+    public List<UserRoleModel> selectUserRoleByUserId(int userId) {
+        return userRoleMapper.find(Collections.singletonMap("userId", userId));
     }
 }

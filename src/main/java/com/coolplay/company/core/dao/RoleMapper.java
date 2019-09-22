@@ -16,4 +16,6 @@ public interface RoleMapper extends Mapper<RoleModel> {
     public List<Map> findRoleMatchUpFunctions();
 
     public RoleModel selectById(@Param("id") int id);
+
+    public List<RoleModel> find(Map<String, Object> param);
 }

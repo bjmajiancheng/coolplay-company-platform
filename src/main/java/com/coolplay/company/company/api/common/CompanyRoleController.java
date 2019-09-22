@@ -4,12 +4,15 @@ import com.coolplay.company.common.utils.PageConvertUtil;
 import com.coolplay.company.common.utils.ResponseUtil;
 import com.coolplay.company.common.utils.Result;
 import com.coolplay.company.company.model.CompanyDeptModel;
+import com.coolplay.company.company.service.ICompanyRoleFunctionService;
 import com.coolplay.company.core.model.RoleFunctionModel;
 import com.coolplay.company.core.model.RoleModel;
 import com.coolplay.company.security.security.CoolplayUserCache;
 import com.coolplay.company.security.service.IRoleService;
+import com.coolplay.company.security.utils.SecurityUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,11 +36,15 @@ public class CompanyRoleController {
     @Autowired
     private CoolplayUserCache coolplayUserCache;
 
+    @Autowired
+    private ICompanyRoleFunctionService companyRoleFunctionService;
+
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Map list(RoleModel roleModel,
             @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
             @RequestParam(value = "rows", required = false, defaultValue = "15") int pageSize) {
+        roleModel.setStatus(1);
         PageInfo<RoleModel> pageInfo = roleService.selectByFilterAndPage(roleModel, pageNum, pageSize);
 
         return PageConvertUtil.grid(pageInfo);
@@ -64,9 +71,45 @@ public class CompanyRoleController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/addCompanyRole", method = RequestMethod.POST)
-    public Result addCompanyRole(RoleModel roleModel) {
+    @RequestMapping(value = "/saveCompanyRole", method = RequestMethod.POST)
+    public Result saveCompanyRole(RoleModel roleModel) {
+        roleModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
+        roleModel.setStatus(1);
         int addCnt = roleService.save(roleModel);
+
+        if (CollectionUtils.isNotEmpty(roleModel.getFunctionIds())) {
+            for (Integer functionId : roleModel.getFunctionIds()) {
+                RoleFunctionModel roleFunctionModel = new RoleFunctionModel();
+                roleFunctionModel.setRoleId(roleModel.getId());
+                roleFunctionModel.setFunctionId(functionId);
+                companyRoleFunctionService.saveNotNull(roleFunctionModel);
+            }
+        }
+
+        return ResponseUtil.success();
+    }
+
+    /**
+     * 添加公司角色信息
+     *
+     * @param roleModel
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updateCompanyRole", method = RequestMethod.POST)
+    public Result updateCompanyRole(RoleModel roleModel) {
+        int addCnt = roleService.updateNotNull(roleModel);
+
+        int delCnt = companyRoleFunctionService.delByRoleId(roleModel.getId());
+
+        if (CollectionUtils.isNotEmpty(roleModel.getFunctionIds())) {
+            for (Integer functionId : roleModel.getFunctionIds()) {
+                RoleFunctionModel roleFunctionModel = new RoleFunctionModel();
+                roleFunctionModel.setRoleId(roleModel.getId());
+                roleFunctionModel.setFunctionId(functionId);
+                companyRoleFunctionService.saveNotNull(roleFunctionModel);
+            }
+        }
 
         return ResponseUtil.success();
     }

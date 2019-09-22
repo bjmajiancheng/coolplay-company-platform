@@ -27,6 +27,12 @@
 
 	<sql id="findWhere">
 	    <where>
+			<if test="userId != null">
+				AND user_id = #{userId}
+			</if>
+			<if test="roleId != null">
+				AND role_id = #{roleId}
+			</if>
 	    </where>
 	</sql>
 
@@ -47,8 +53,12 @@
 	</select>
 
 	<select id="getUserIdsByRoleId" resultType="java.lang.Integer">
-		SELECT user_id FROM d_company_user_role WHERE user_id = #{user_id}
+		SELECT user_id FROM d_company_user_role WHERE role_id = #{roleId}
 	</select>
+
+	<update id="deleteByUserId">
+		DELETE FROM d_company_user_role where user_id = #{userId}
+	</update>
 	
 </mapper>
 
