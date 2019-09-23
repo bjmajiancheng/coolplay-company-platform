@@ -22,7 +22,6 @@ public class CompanyDeptServiceImpl extends BaseService<CompanyDeptModel> implem
     @Autowired
     private CompanyDeptMapper companyDeptMapper;
 
-
     @Override
     public PageInfo<CompanyDeptModel> selectByFilterAndPage(CompanyDeptModel companyDeptModel, int pageNum,
             int pageSize) {
@@ -36,24 +35,29 @@ public class CompanyDeptServiceImpl extends BaseService<CompanyDeptModel> implem
         Example example = new Example(CompanyDeptModel.class);
         Example.Criteria criteria = example.createCriteria();
 
-        if(companyDeptModel.getStartDate() != null) {
+        if (companyDeptModel.getStartDate() != null) {
             criteria.andGreaterThanOrEqualTo("ctime", companyDeptModel.getStartDate());
         }
-        if(companyDeptModel.getEndDate() != null) {
+        if (companyDeptModel.getEndDate() != null) {
             criteria.andLessThanOrEqualTo("ctime", companyDeptModel.getEndDate());
         }
-        if(companyDeptModel.getCompanyId() != null) {
-            criteria.andEqualTo(companyDeptModel.getCompanyId());
+        if (companyDeptModel.getCompanyId() != null) {
+            criteria.andEqualTo("companyId", companyDeptModel.getCompanyId());
         }
-        if(StringUtils.isNotEmpty(companyDeptModel.getSortWithOutOrderBy())) {
+        if (StringUtils.isNotEmpty(companyDeptModel.getDeptName())) {
+            criteria.andLike("deptName", "%" + companyDeptModel.getDeptName() + "%");
+        }
+        if (companyDeptModel.getStatus() != null) {
+            criteria.andEqualTo("status", companyDeptModel.getStatus());
+        }
+        if (StringUtils.isNotEmpty(companyDeptModel.getSortWithOutOrderBy())) {
             example.setOrderByClause(companyDeptModel.getSortWithOutOrderBy());
         }
         return getMapper().selectByExample(example);
     }
 
-
     @Override
     public CompanyDeptModel selectById(int id) {
-        return companyDeptMapper.selectById(id);
+        return companyDeptMapper.findById(id);
     }
 }

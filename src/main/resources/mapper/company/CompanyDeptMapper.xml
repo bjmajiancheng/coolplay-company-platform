@@ -34,9 +34,8 @@
 		<include refid="findWhere"/>
     </select>
 
-	<select id="selectById" resultMap="CompanyDept">
-		SELECT <include refid="columns"/> FROM d_company_dept
-		WHERE id = #{id}
+	<select id="findById" resultMap="CompanyDept">
+		SELECT <include refid="columns"/> FROM d_company_dept WHERE id = #{id}
 	</select>
 	
 </mapper>

@@ -5,6 +5,7 @@ import com.coolplay.company.common.utils.ResponseUtil;
 import com.coolplay.company.common.utils.Result;
 import com.coolplay.company.company.model.CompanyDeptModel;
 import com.coolplay.company.company.service.ICompanyDeptService;
+import com.coolplay.company.security.utils.SecurityUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ public class CompanyDeptController {
     public Map list(CompanyDeptModel companyDeptModel,
             @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
             @RequestParam(value = "rows", required = false, defaultValue = "15") int pageSize) {
+        companyDeptModel.setStatus(1);
         PageInfo<CompanyDeptModel> pageInfo = companyDeptService
                 .selectByFilterAndPage(companyDeptModel, pageNum, pageSize);
 
@@ -75,9 +77,26 @@ public class CompanyDeptController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/addCompanyDept", method = RequestMethod.POST)
-    public Result addCompanyDept(CompanyDeptModel companyDeptModel) {
+    @RequestMapping(value = "/saveCompanyDept", method = RequestMethod.POST)
+    public Result saveCompanyDept(CompanyDeptModel companyDeptModel) {
+        companyDeptModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
+        companyDeptModel.setStatus(1);
         int addCnt = companyDeptService.save(companyDeptModel);
+
+        return ResponseUtil.success();
+    }
+
+    /**
+     * 修改公司部门信息
+     *
+     * @param companyDeptModel
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updateCompanyDept", method = RequestMethod.POST)
+    public Result updateCompanyDept(CompanyDeptModel companyDeptModel) {
+        companyDeptModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
+        int updateCnt = companyDeptService.updateNotNull(companyDeptModel);
 
         return ResponseUtil.success();
     }

@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -60,6 +62,16 @@ public class CompanyRoleController {
     @RequestMapping(value = "/getCompanyRole", method = RequestMethod.GET)
     public Result getCompanyRole(@RequestParam("id") int id) {
         RoleModel roleModel = roleService.selectById(id);
+
+        List<RoleFunctionModel> roleFunctions = companyRoleFunctionService.find(Collections.singletonMap("roleId", id));
+        if (CollectionUtils.isNotEmpty(roleFunctions)) {
+            List<Integer> functionIds = new ArrayList<Integer>(roleFunctions.size());
+            for (RoleFunctionModel roleFunction : roleFunctions) {
+                functionIds.add(roleFunction.getFunctionId());
+            }
+
+            roleModel.setFunctionIds(functionIds);
+        }
 
         return ResponseUtil.success(roleModel);
     }

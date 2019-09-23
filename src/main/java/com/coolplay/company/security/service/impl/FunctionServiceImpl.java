@@ -33,7 +33,7 @@ public class FunctionServiceImpl extends BaseService<FunctionModel> implements I
 
     @Override
     public List<FunctionModel> selectByFilter(FunctionModel functionModel) {
-        Example example = new Example(RoleModel.class);
+        Example example = new Example(FunctionModel.class);
         Example.Criteria criteria = example.createCriteria();
 
         if (StringUtils.isNotEmpty(functionModel.getFunctionName())) {

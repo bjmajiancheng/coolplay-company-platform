@@ -23,6 +23,6 @@ public interface CompanyDeptMapper extends Mapper<CompanyDeptModel> {
 
 	public List<CompanyDeptModel> find(Map<String, Object> param);
 
-	public CompanyDeptModel selectById(@Param("id") int id);
+	public CompanyDeptModel findById(@Param("id") int id);
 
 }

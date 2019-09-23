@@ -52,7 +52,7 @@
 
 	<select id="selectById" resultMap="CompanyFunction">
 		SELECT <include refid="columns"/> FROM d_company_function
-		<include refid="findWhere"/>
+		WHERE id = #{id}
 	</select>
 
 	<select id="selectFunctionTreeNodes" resultMap="TreeNodeMap">

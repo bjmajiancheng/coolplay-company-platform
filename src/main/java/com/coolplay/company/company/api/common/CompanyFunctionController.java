@@ -1,5 +1,6 @@
 package com.coolplay.company.company.api.common;
 
+import com.alibaba.druid.util.StringUtils;
 import com.coolplay.company.common.utils.PageConvertUtil;
 import com.coolplay.company.common.utils.ResponseUtil;
 import com.coolplay.company.common.utils.Result;
@@ -60,8 +61,13 @@ public class CompanyFunctionController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/addCompanyFunction", method = RequestMethod.POST)
-    public Result addCompanyFunction(FunctionModel functionModel) {
+    @RequestMapping(value = "/saveCompanyFunction", method = RequestMethod.POST)
+    public Result saveCompanyFunction(FunctionModel functionModel) {
+        functionModel.setStatus(1);
+        functionModel.setDisplay(1);
+        if(StringUtils.isEmpty(functionModel.getIcon())) {
+            functionModel.setIcon("");
+        }
         int addCnt = functionService.save(functionModel);
 
         return ResponseUtil.success();
