@@ -68,4 +68,12 @@ public class CoolplayBaseController {
         int updateCnt = coolplayBaseService.updateNotNull(coolplayBaseModel);
         return ResponseUtil.success();
     }
+
+    @ResponseBody
+    @RequestMapping(value="/saveCoolplayBase", method = RequestMethod.POST)
+    public Result saveCoolplayBase(CoolplayBaseModel coolplayBaseModel) {
+        int saveCnt = coolplayBaseService.saveNotNull(coolplayBaseModel);
+
+        return ResponseUtil.success();
+    }
 }
