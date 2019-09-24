@@ -28,7 +28,34 @@ public class CommonController {
     private final static Integer FILE = 1;
 
     @Autowired
-    private IAttachmentService iAttachmentService;
+    private IAttachmentService attachmentService;
+
+    @RequestMapping(value = "/uploadFile", method = { RequestMethod.POST })
+    @ResponseBody
+    public Result uploadFile(HttpServletRequest request,
+            @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        try {
+            if (file == null || file.isEmpty()) {
+                return ResponseUtil.error("请选择文件。");
+            }
+            //文件夹名
+            String dirName = "file";
+            // 最大文件大小
+            long maxSize = 20000000;
+
+            // 定义允许上传的文件扩展名
+            HashMap<String, String> extMap = new HashMap<String, String>();
+            extMap.put(dirName,
+                    "doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar,gz,bz2,gif,jpg,jpeg,png,bmp,swf,flv,mp3,wav,wma,wmv,mid,avi,mpg,asf,rm,rmvb");
+
+            Attachment attachment = attachmentService
+                    .uploadFileAttachement(request, file, dirName, maxSize, extMap, FILE);
+            return ResponseUtil.success(attachment);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseUtil.error("上传失败。");
+        }
+    }
 
     @RequestMapping(value = "/uploadImage", method = { RequestMethod.POST })
     @ResponseBody
@@ -47,13 +74,49 @@ public class CommonController {
             HashMap<String, String> extMap = new HashMap<String, String>();
             extMap.put(dirName, "gif,jpg,jpeg,png,bmp");
 
-            Attachment attachment = iAttachmentService
+            Attachment attachment = attachmentService
                     .uploadFileAttachement(request, file, dirName, maxSize, extMap, IMAGE);
             return ResponseUtil.success(attachment);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseUtil.error("上传失败。");
         }
+    }
+
+    @RequestMapping(value = "/uploadFiles", method = RequestMethod.POST)
+    @ResponseBody
+    public Object uploadFiles(HttpServletRequest request,
+            @RequestParam(value = "files[]", required = false) MultipartFile[] file) throws Exception {
+        if (file.length > 0) {
+            for (MultipartFile multipartFile : file) {
+                //文件夹名
+                String dirName = "file";
+                // 最大文件大小
+                long maxSize = 20000000;
+
+                // 定义允许上传的文件扩展名
+                HashMap<String, String> extMap = new HashMap<String, String>();
+                extMap.put(dirName,
+                        "doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar,gz,bz2,gif,jpg,jpeg,png,bmp,swf,flv,mp3,wav,wma,wmv,mid,avi,mpg,asf,rm,rmvb");
+
+                Attachment attachment = attachmentService
+                        .uploadFileAttachement(request, multipartFile, dirName, maxSize, extMap, FILE);
+                return attachment;
+            }
+        }
+        return false;
+    }
+
+    @RequestMapping(value = "/attachment", method = RequestMethod.POST)
+    @ResponseBody
+    public Result attachment(@RequestParam("attachmentId") Integer attachmentId) throws Exception {
+        if (attachmentId != null) {
+            Attachment attachment = attachmentService.selectByKey(attachmentId);
+            if (attachment != null) {
+                return ResponseUtil.success(attachment);
+            }
+        }
+        return ResponseUtil.error("附件id不存在。");
     }
 
 }

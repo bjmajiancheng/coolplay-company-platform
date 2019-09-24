@@ -4,8 +4,10 @@ import com.coolplay.company.common.baseservice.impl.BaseService;
 import com.coolplay.company.common.service.IAttachmentService;
 import com.coolplay.company.common.utils.FileUtil;
 import com.coolplay.company.common.utils.ResponseUtil;
+import com.coolplay.company.core.dao.AttachmentMapper;
 import com.coolplay.company.core.model.Attachment;
 import com.coolplay.company.security.utils.SecurityUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,11 +24,14 @@ import java.util.Random;
 /**
  * Created by majiancheng on 2019/9/23.
  */
-@Service
+@Service("attachmentService")
 public class AttachmentServiceImpl extends BaseService<Attachment> implements IAttachmentService {
 
     @Value("${upload.folder}")
-    String uploadFolder;
+    private String uploadFolder;
+
+    @Autowired
+    private AttachmentMapper attachmentMapper;
 
     @Override
     public Attachment uploadFileAttachement(HttpServletRequest request, MultipartFile file, String dirName,

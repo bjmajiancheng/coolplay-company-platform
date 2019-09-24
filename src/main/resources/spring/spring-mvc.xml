@@ -17,6 +17,8 @@
     <mvc:default-servlet-handler/>
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
+    <mvc:resources location="/upload/" mapping="/upload/**"/>
+
     <!-- 加载配置文件 -->
     <bean id="appProperty"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
