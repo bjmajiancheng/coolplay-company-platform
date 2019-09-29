@@ -38,6 +38,11 @@
 		FROM d_circle_public WHERE id = #{id}
 	</select>
 
+	<select id="findLastPublicByCircleId" resultMap="CirclePublic">
+		SELECT <include refid="columns"/>
+		FROM d_circle_public
+		WHERE circle_id = #{circleId} ORDER BY id DESC LIMIT 1
+	</select>
 	
 </mapper>
 

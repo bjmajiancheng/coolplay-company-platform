@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by majiancheng on 2019/9/16.
@@ -56,4 +57,6 @@ public interface IUserService extends IBaseService<UserModel> {
     public UserModel findUserByUserId(int userId);
 
     public List<UserRoleModel> selectUserRoleByUserId(int userId);
+
+    public Map<Integer, UserModel> findUserMapByUserIds(List<Integer> userIds);
 }

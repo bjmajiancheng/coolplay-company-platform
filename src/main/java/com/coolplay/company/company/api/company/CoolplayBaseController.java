@@ -4,9 +4,16 @@ import com.coolplay.company.common.utils.PageConvertUtil;
 import com.coolplay.company.common.utils.ResponseUtil;
 import com.coolplay.company.common.utils.Result;
 import com.coolplay.company.company.model.CompanyCircleModel;
+import com.coolplay.company.company.model.CoolplayBaseLabelModel;
 import com.coolplay.company.company.model.CoolplayBaseModel;
+import com.coolplay.company.company.service.ICoolplayBaseLabelService;
 import com.coolplay.company.company.service.ICoolplayBaseService;
+import com.coolplay.company.core.model.UserModel;
+import com.coolplay.company.security.service.IUserService;
+import com.coolplay.company.security.utils.SecurityUtil;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by majiancheng on 2019/9/22.
@@ -26,15 +33,50 @@ public class CoolplayBaseController {
     @Autowired
     private ICoolplayBaseService coolplayBaseService;
 
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private ICoolplayBaseLabelService coolplayBaseLabelService;
+
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Map list(CoolplayBaseModel coolplayBaseModel,
             @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
             @RequestParam(value = "rows", required = false, defaultValue = "15") int pageSize) {
 
+        coolplayBaseModel.setIsDel(0);
         PageInfo<CoolplayBaseModel> pageInfo = coolplayBaseService.selectByFilterAndPage(coolplayBaseModel, pageNum, pageSize);
 
+        if(CollectionUtils.isNotEmpty(pageInfo.getList())) {
+            List<Integer> userIds = new ArrayList<Integer>();
+            List<Integer> baseIds = new ArrayList<Integer>();
+            for (CoolplayBaseModel tmpCoolplayBase : pageInfo.getList()) {
+                userIds.add(tmpCoolplayBase.getCompanyUserId());
+                baseIds.add(tmpCoolplayBase.getId());
+            }
 
+            Map<Integer, UserModel> userModelMap = userService.findUserMapByUserIds(userIds);
+            Map<Integer, List<CoolplayBaseLabelModel>> baseLabelModelMap = coolplayBaseLabelService.findMapByBaseIds(baseIds);
+            for(CoolplayBaseModel tmpCoolplayBase : pageInfo.getList()) {
+                UserModel userModel = userModelMap.get(tmpCoolplayBase.getCompanyUserId());
+                if(userModel != null) {
+                    tmpCoolplayBase.setCompanyUserName(userModel.getDisplayName());
+                }
+                List<CoolplayBaseLabelModel> baseLabelModels = baseLabelModelMap.get(tmpCoolplayBase.getId());
+                if(CollectionUtils.isNotEmpty(baseLabelModels)) {
+                    StringBuffer sb = new StringBuffer();
+                    for(CoolplayBaseLabelModel baseLabelModel : baseLabelModels) {
+                        if(sb.length() > 0) {
+                            sb.append("、");
+                        }
+
+                        sb.append(baseLabelModel.getLabelName());
+                    }
+                    tmpCoolplayBase.setLabelName(sb.toString());
+                }
+            }
+        }
         return PageConvertUtil.grid(pageInfo);
     }
 
@@ -42,6 +84,23 @@ public class CoolplayBaseController {
     @RequestMapping(value="/getCoolplayBase", method = RequestMethod.GET)
     public Result getCoolplayBase(@RequestParam("id") int id) {
         CoolplayBaseModel coolplayBaseModel = coolplayBaseService.findById(id);
+
+        Map<Integer, List<CoolplayBaseLabelModel>> baseLabelModelMap = coolplayBaseLabelService.findMapByBaseIds(
+                Collections.singletonList(id));
+        if (MapUtils.isNotEmpty(baseLabelModelMap)) {
+            List<CoolplayBaseLabelModel> baseLabelModels = baseLabelModelMap.get(id);
+            if(CollectionUtils.isNotEmpty(baseLabelModels)) {
+                StringBuffer sb = new StringBuffer();
+                for(CoolplayBaseLabelModel baseLabelModel : baseLabelModels) {
+                    if(sb.length() > 0) {
+                        sb.append("、");
+                    }
+                    sb.append(baseLabelModel.getLabelName());
+                }
+
+                coolplayBaseModel.setLabelName(sb.toString());
+            }
+        }
 
         return ResponseUtil.success(coolplayBaseModel);
     }
@@ -72,7 +131,22 @@ public class CoolplayBaseController {
     @ResponseBody
     @RequestMapping(value="/saveCoolplayBase", method = RequestMethod.POST)
     public Result saveCoolplayBase(CoolplayBaseModel coolplayBaseModel) {
+        coolplayBaseModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
+        coolplayBaseModel.setCompanyUserId(SecurityUtil.getCurrentUserId());
+        coolplayBaseModel.setIsClose(1);
+        coolplayBaseModel.setIsDel(0);
         int saveCnt = coolplayBaseService.saveNotNull(coolplayBaseModel);
+
+        if(CollectionUtils.isNotEmpty(coolplayBaseModel.getLabelIds())) {
+            for(Integer labelId : coolplayBaseModel.getLabelIds()) {
+                CoolplayBaseLabelModel baseLabelModel = new CoolplayBaseLabelModel();
+                baseLabelModel.setLabelId(labelId);
+                baseLabelModel.setCoolplayBaseId(coolplayBaseModel.getId());
+                baseLabelModel.setCtime(new Date());
+
+                coolplayBaseLabelService.saveNotNull(baseLabelModel);
+            }
+        }
 
         return ResponseUtil.success();
     }

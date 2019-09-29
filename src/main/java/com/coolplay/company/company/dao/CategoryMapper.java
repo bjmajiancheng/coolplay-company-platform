@@ -6,7 +6,7 @@
  */
 
 package com.coolplay.company.company.dao;
-import com.coolplay.company.company.model.CirclePublicModel;
+import com.coolplay.company.company.model.CategoryModel;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -20,11 +20,10 @@ import com.coolplay.company.company.service.*;
  * @since 1.0
  */
 
-public interface CirclePublicMapper extends Mapper<CirclePublicModel> {
+public interface CategoryMapper extends Mapper<CategoryModel> {
 
-	public List<CirclePublicModel> find(Map<String, Object> param);
+	public List<CategoryModel> find(Map<String, Object> param);
 
-	public CirclePublicModel findById(@Param("id") Integer id);
+	public CategoryModel findById(@Param("id") Integer id);
 
-	public CirclePublicModel findLastPublicByCircleId(@Param("circleId") Integer circleId);
 }

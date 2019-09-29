@@ -23,50 +23,62 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
+
 import com.coolplay.company.company.dao.*;
 import com.coolplay.company.company.service.*;
 import com.coolplay.company.common.baseservice.impl.BaseService;
 
 /**
- * @author  davdian
+ * @author davdian
  * @version 1.0
  * @since 1.0
  */
 
 @Service("coolplayBaseService")
-public class CoolplayBaseServiceImpl extends BaseService<CoolplayBaseModel> implements ICoolplayBaseService{
-	@Autowired
-	private CoolplayBaseMapper coolplayBaseMapper;
-	
-	@Override
-	public CoolplayBaseModel findById(Integer id) {
-		if(id == null) {
-			return null;
-		}
-		return coolplayBaseMapper.findById(id);
-	}
+public class CoolplayBaseServiceImpl extends BaseService<CoolplayBaseModel> implements ICoolplayBaseService {
 
+    @Autowired
+    private CoolplayBaseMapper coolplayBaseMapper;
 
-	public List<CoolplayBaseModel> find(Map<String, Object> param) {
-		return coolplayBaseMapper.find(param);
-	}
+    @Override
+    public CoolplayBaseModel findById(Integer id) {
+        if (id == null) {
+            return null;
+        }
+        return coolplayBaseMapper.findById(id);
+    }
 
-	@Override
-	public PageInfo<CoolplayBaseModel> selectByFilterAndPage(CoolplayBaseModel coolplayBaseModel, int pageNum,
-		int pageSize) {
-		PageHelper.startPage(pageNum, pageSize);
-		List<CoolplayBaseModel> list = this.selectByFilter(coolplayBaseModel);
-		return new PageInfo<>(list);
-	}
+    public List<CoolplayBaseModel> find(Map<String, Object> param) {
+        return coolplayBaseMapper.find(param);
+    }
 
-	@Override
-	public List<CoolplayBaseModel> selectByFilter(CoolplayBaseModel coolplayBaseModel) {
-		Example example = new Example(CoolplayBaseModel.class);
-		Example.Criteria criteria = example.createCriteria();
+    @Override
+    public PageInfo<CoolplayBaseModel> selectByFilterAndPage(CoolplayBaseModel coolplayBaseModel, int pageNum,
+            int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<CoolplayBaseModel> list = this.selectByFilter(coolplayBaseModel);
+        return new PageInfo<>(list);
+    }
 
-		if(StringUtils.isNotEmpty(coolplayBaseModel.getSortWithOutOrderBy())) {
-			example.setOrderByClause(coolplayBaseModel.getSortWithOutOrderBy());
-		}
-		return getMapper().selectByExample(example);
-	}
+    @Override
+    public List<CoolplayBaseModel> selectByFilter(CoolplayBaseModel coolplayBaseModel) {
+        Example example = new Example(CoolplayBaseModel.class);
+        Example.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotEmpty(coolplayBaseModel.getBaseName())) {
+            criteria.andLike("baseName", "%" + coolplayBaseModel.getBaseName() + "%");
+        }
+
+        if (coolplayBaseModel.getIsClose() != null) {
+            criteria.andEqualTo("isClose", coolplayBaseModel.getIsClose());
+        }
+
+        if(coolplayBaseModel.getIsDel() != null) {
+            criteria.andEqualTo("isDel", coolplayBaseModel.getIsDel());
+        }
+
+        if (StringUtils.isNotEmpty(coolplayBaseModel.getSortWithOutOrderBy())) {
+            example.setOrderByClause(coolplayBaseModel.getSortWithOutOrderBy());
+        }
+        return getMapper().selectByExample(example);
+    }
 }

@@ -23,50 +23,66 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
+
 import com.coolplay.company.company.dao.*;
 import com.coolplay.company.company.service.*;
 import com.coolplay.company.common.baseservice.impl.BaseService;
 
 /**
- * @author  davdian
+ * @author davdian
  * @version 1.0
  * @since 1.0
  */
 
 @Service("circleService")
-public class CircleServiceImpl extends BaseService<CircleModel> implements ICircleService{
-	@Autowired
-	private CircleMapper circleMapper;
-	
-	@Override
-	public CircleModel findById(Integer id) {
-		if(id == null) {
-			return null;
-		}
-		return circleMapper.findById(id);
-	}
+public class CircleServiceImpl extends BaseService<CircleModel> implements ICircleService {
 
+    @Autowired
+    private CircleMapper circleMapper;
 
-	public List<CircleModel> find(Map<String, Object> param) {
-		return circleMapper.find(param);
-	}
+    @Override
+    public CircleModel findById(Integer id) {
+        if (id == null) {
+            return null;
+        }
+        return circleMapper.findById(id);
+    }
 
-	@Override
-	public PageInfo<CircleModel> selectByFilterAndPage(CircleModel circleModel, int pageNum,
-		int pageSize) {
-		PageHelper.startPage(pageNum, pageSize);
-		List<CircleModel> list = this.selectByFilter(circleModel);
-		return new PageInfo<>(list);
-	}
+    public List<CircleModel> find(Map<String, Object> param) {
+        return circleMapper.find(param);
+    }
 
-	@Override
-	public List<CircleModel> selectByFilter(CircleModel circleModel) {
-		Example example = new Example(CircleModel.class);
-		Example.Criteria criteria = example.createCriteria();
+    @Override
+    public PageInfo<CircleModel> selectByFilterAndPage(CircleModel circleModel, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<CircleModel> list = this.selectByFilter(circleModel);
+        return new PageInfo<>(list);
+    }
 
-		if(StringUtils.isNotEmpty(circleModel.getSortWithOutOrderBy())) {
-			example.setOrderByClause(circleModel.getSortWithOutOrderBy());
-		}
-		return getMapper().selectByExample(example);
-	}
+    @Override
+    public List<CircleModel> selectByFilter(CircleModel circleModel) {
+        Example example = new Example(CircleModel.class);
+        Example.Criteria criteria = example.createCriteria();
+
+        if (StringUtils.isNotEmpty(circleModel.getSortWithOutOrderBy())) {
+            example.setOrderByClause(circleModel.getSortWithOutOrderBy());
+        }
+        return getMapper().selectByExample(example);
+    }
+
+    public Map<Integer, CircleModel> findMapByIds(List<Integer> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            return Collections.emptyMap();
+        }
+
+        List<CircleModel> circleModels = this.find(Collections.singletonMap("ids", ids));
+        Map<Integer, CircleModel> circleModelMap = new HashMap<Integer, CircleModel>();
+        if(CollectionUtils.isNotEmpty(circleModels)) {
+            for(CircleModel circleModel: circleModels) {
+                circleModelMap.put(circleModel.getId(), circleModel);
+            }
+        }
+
+        return circleModelMap;
+    }
 }

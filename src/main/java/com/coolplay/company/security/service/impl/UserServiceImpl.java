@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by majiancheng on 2019/9/16.
@@ -112,5 +110,23 @@ public class UserServiceImpl extends BaseService<UserModel> implements IUserServ
     @Override
     public List<UserRoleModel> selectUserRoleByUserId(int userId) {
         return userRoleMapper.find(Collections.singletonMap("userId", userId));
+    }
+
+    @Override
+    public Map<Integer, UserModel> findUserMapByUserIds(List<Integer> userIds) {
+        if(CollectionUtils.isEmpty(userIds)) {
+            return Collections.emptyMap();
+        }
+        List<UserModel> userModels = userMapper.find(Collections.singletonMap("userIds", userIds));
+        if(CollectionUtils.isEmpty(userModels)) {
+            return Collections.emptyMap();
+        }
+
+        Map<Integer, UserModel> userModelMap = new HashMap<Integer, UserModel>();
+        for(UserModel userModel : userModels) {
+            userModelMap.put(userModel.getId(), userModel);
+        }
+
+        return userModelMap;
     }
 }

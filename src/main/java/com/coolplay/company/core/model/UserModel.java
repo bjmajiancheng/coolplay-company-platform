@@ -91,6 +91,9 @@ public class UserModel extends Sortable {
 	private String roleName;
 
 	@Transient
+	private String deptName;
+
+	@Transient
 	private Integer roleId;//"角色Id"
 		
 	public void setId(Integer id) {
@@ -235,6 +238,14 @@ public class UserModel extends Sortable {
 
 	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
+	}
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
 	}
 }
 

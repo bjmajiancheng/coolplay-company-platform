@@ -69,4 +69,28 @@ public class CoolplayBaseLabelServiceImpl extends BaseService<CoolplayBaseLabelM
 		}
 		return getMapper().selectByExample(example);
 	}
+
+
+	public Map<Integer, List<CoolplayBaseLabelModel>> findMapByBaseIds(List<Integer> baseIds) {
+		if(CollectionUtils.isEmpty(baseIds)) {
+			return Collections.emptyMap();
+		}
+
+		List<CoolplayBaseLabelModel> baseLabelModels = coolplayBaseLabelMapper.find(Collections.singletonMap("coolplayBaseIds", baseIds));
+		if(CollectionUtils.isEmpty(baseLabelModels)) {
+			return Collections.emptyMap();
+		}
+
+		Map<Integer, List<CoolplayBaseLabelModel>> baseLabelModelMap = new HashMap<Integer, List<CoolplayBaseLabelModel>>();
+		for(CoolplayBaseLabelModel baseLabelModel : baseLabelModels) {
+			List<CoolplayBaseLabelModel> tmpBaseLabelModels = baseLabelModelMap.get(baseLabelModel.getCoolplayBaseId());
+			if(CollectionUtils.isEmpty(tmpBaseLabelModels)) {
+				tmpBaseLabelModels = new ArrayList<CoolplayBaseLabelModel>();
+			}
+			tmpBaseLabelModels.add(baseLabelModel);
+			baseLabelModelMap.put(baseLabelModel.getCoolplayBaseId(), tmpBaseLabelModels);
+		}
+
+		return baseLabelModelMap;
+	}
 }

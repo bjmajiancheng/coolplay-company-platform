@@ -21,8 +21,8 @@ import javax.persistence.*;
  * @version 1.0
  * @since 1.0
  */
-@Table(name = "d_circle_label")
-public class CircleLabelModel extends Sortable {
+@Table(name = "d_category")
+public class CategoryModel extends Sortable {
 	private static final long serialVersionUID = 1L;
 
 	//columns START
@@ -30,19 +30,16 @@ public class CircleLabelModel extends Sortable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;//"主键"
 
-	@Column(name = "circle_id")
-	private Integer circleId;//"圈子ID"
+	@Column(name = "cat_name")
+	private String catName;//"分类名称"
 
-	@Column(name = "label_id")
-	private Integer labelId;//"标签ID"
+	@Column(name = "is_del")
+	private Integer isDel;//"是否删除"
 
 	@Column(name = "c_time")
 	private Date ctime;//"创建时间"
 
 	//columns END
-
-	@Transient
-	private String labelName;//"标签名"
 		
 	public void setId(Integer id) {
 		this.id = id;
@@ -52,20 +49,20 @@ public class CircleLabelModel extends Sortable {
 		return this.id;
 	}
 		
-	public void setCircleId(Integer circleId) {
-		this.circleId = circleId;
+	public void setCatName(String catName) {
+		this.catName = catName;
 	}
 
-	public Integer getCircleId() {
-		return this.circleId;
+	public String getCatName() {
+		return this.catName;
 	}
 		
-	public void setLabelId(Integer labelId) {
-		this.labelId = labelId;
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
 	}
 
-	public Integer getLabelId() {
-		return this.labelId;
+	public Integer getIsDel() {
+		return this.isDel;
 	}
 		
 	public void setCtime(Date ctime) {
@@ -76,12 +73,5 @@ public class CircleLabelModel extends Sortable {
 		return this.ctime;
 	}
 
-	public String getLabelName() {
-		return labelName;
-	}
-
-	public void setLabelName(String labelName) {
-		this.labelName = labelName;
-	}
 }
 

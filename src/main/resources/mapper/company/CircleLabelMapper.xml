@@ -9,6 +9,7 @@
         <result property="id" column="id"/>
         <result property="circleId" column="circle_id"/>
         <result property="labelId" column="label_id"/>
+		<result property="labelName" column="label_name"/>
         <result property="ctime" column="c_time"/>
     </resultMap>
 
@@ -21,18 +22,29 @@
 
 	<sql id="findWhere">
 	    <where>
+			<if test="circleId != null">
+				AND circle_id = #{circleId}
+			</if>
 	    </where>
 	</sql>
 
 	
 	<select id="find" resultMap="CircleLabel">
-	    SELECT <include refid="columns"/> FROM d_circle_label 
+	    SELECT <include refid="columns"/> FROM d_circle_label
 		<include refid="findWhere"/>
     </select>
 
 	<select id="findById" resultMap="CircleLabel" >
 		SELECT <include refid="columns"/>
 		FROM d_circle_label WHERE id = #{id}
+	</select>
+
+	<select id="findFullInfoByCircleIds" resultMap="CircleLabel">
+		SELECT cl.id, cl.circle_id, cl.label_id, l.label_name, cl.c_time FROM d_circle_label cl INNER JOIN d_label l ON cl.label_id = l.id
+		WHERE cl.circle_id IN
+		<foreach collection="circleIds" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
 	</select>
 </mapper>
 

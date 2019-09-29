@@ -54,6 +54,9 @@ public class FunctionModel extends Sortable {
 	@Column(name = "c_time")
 	private Date ctime;//"创建时间"
 	//columns END
+
+	@Transient
+	private String parentFunctionName;//"父菜单名称"
 		
 	public void setId(Integer id) {
 		this.id = id;
@@ -127,5 +130,12 @@ public class FunctionModel extends Sortable {
 		return this.ctime;
 	}
 
+	public String getParentFunctionName() {
+		return parentFunctionName;
+	}
+
+	public void setParentFunctionName(String parentFunctionName) {
+		this.parentFunctionName = parentFunctionName;
+	}
 }
 

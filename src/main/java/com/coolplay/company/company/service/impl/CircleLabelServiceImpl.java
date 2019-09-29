@@ -69,4 +69,28 @@ public class CircleLabelServiceImpl extends BaseService<CircleLabelModel> implem
 		}
 		return getMapper().selectByExample(example);
 	}
+
+	public Map<Integer, List<CircleLabelModel>> findMapByCircleIds(List<Integer> circleIds) {
+		if(CollectionUtils.isEmpty(circleIds)) {
+			return Collections.emptyMap();
+		}
+
+		List<CircleLabelModel> circleLabelModels = circleLabelMapper.findFullInfoByCircleIds(circleIds);
+		if(CollectionUtils.isEmpty(circleLabelModels)) {
+			return Collections.emptyMap();
+		}
+
+		Map<Integer, List<CircleLabelModel>> circleLabelMap = new HashMap<Integer, List<CircleLabelModel>>();
+		for(CircleLabelModel circleLabelModel : circleLabelModels) {
+			List<CircleLabelModel> tmpCircleLabels = circleLabelMap.get(circleLabelModel.getCircleId());
+			if(CollectionUtils.isEmpty(tmpCircleLabels)) {
+				tmpCircleLabels = new ArrayList<CircleLabelModel>();
+			}
+			tmpCircleLabels.add(circleLabelModel);
+
+			circleLabelMap.put(circleLabelModel.getCircleId(), tmpCircleLabels);
+		}
+
+		return circleLabelMap;
+	}
 }

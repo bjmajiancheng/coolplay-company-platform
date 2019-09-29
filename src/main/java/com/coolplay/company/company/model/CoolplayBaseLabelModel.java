@@ -39,6 +39,9 @@ public class CoolplayBaseLabelModel extends Sortable {
 	private Date ctime;//"创建时间"
 
 	//columns END
+
+	@Transient
+	private String labelName;//"标签内容"
 		
 	public void setId(Integer id) {
 		this.id = id;
@@ -72,5 +75,12 @@ public class CoolplayBaseLabelModel extends Sortable {
 		return this.ctime;
 	}
 
+	public String getLabelName() {
+		return labelName;
+	}
+
+	public void setLabelName(String labelName) {
+		this.labelName = labelName;
+	}
 }
 

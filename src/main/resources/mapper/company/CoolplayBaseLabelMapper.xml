@@ -10,6 +10,7 @@
         <result property="coolplayBaseId" column="coolplay_base_id"/>
         <result property="labelId" column="label_id"/>
         <result property="ctime" column="c_time"/>
+		<result property="labelName" column="label_name"/>
     </resultMap>
 
 	<!-- 用于select查询公用抽取的列 -->
@@ -21,12 +22,19 @@
 
 	<sql id="findWhere">
 	    <where>
+			<if test="coolplayBaseIds != null">
+				AND coolplay_base_id IN
+				<foreach collection="coolplayBaseIds" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
 	    </where>
 	</sql>
 
 	
 	<select id="find" resultMap="CoolplayBaseLabel">
-	    SELECT <include refid="columns"/> FROM d_coolplay_base_label 
+	    SELECT bl.id ,bl.coolplay_base_id ,bl.label_id ,bl.c_time, dl.label_name FROM d_coolplay_base_label bl
+		INNER JOIN d_label dl ON bl.label_id = dl.id
 		<include refid="findWhere"/>
     </select>
 

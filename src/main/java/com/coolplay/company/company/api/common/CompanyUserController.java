@@ -3,6 +3,8 @@ package com.coolplay.company.company.api.common;
 import com.coolplay.company.common.utils.PageConvertUtil;
 import com.coolplay.company.common.utils.ResponseUtil;
 import com.coolplay.company.common.utils.Result;
+import com.coolplay.company.company.model.CompanyDeptModel;
+import com.coolplay.company.company.service.ICompanyDeptService;
 import com.coolplay.company.company.service.ICompanyUserRoleService;
 import com.coolplay.company.core.model.RoleModel;
 import com.coolplay.company.core.model.UserModel;
@@ -45,6 +47,9 @@ public class CompanyUserController {
     @Autowired
     private ICompanyUserRoleService companyUserRoleService;
 
+    @Autowired
+    private ICompanyDeptService companyDeptService;
+
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Map list(UserModel userModel,
@@ -84,8 +89,18 @@ public class CompanyUserController {
     public Result getUser(@RequestParam("userId") int userId) {
         UserModel userModel = userService.findUserByUserId(userId);
         List<UserRoleModel> userRoleModels = userService.selectUserRoleByUserId(userId);
+
         if(CollectionUtils.isNotEmpty(userRoleModels)) {
             userModel.setRoleId(userRoleModels.get(0).getRoleId());
+            RoleModel roleModel = roleService.selectById(userRoleModels.get(0).getRoleId());
+            if(roleModel != null) {
+                userModel.setRoleName(roleModel.getRoleName());
+            }
+        }
+
+        CompanyDeptModel companyDeptModel = companyDeptService.selectById(userModel.getDeptId());
+        if(companyDeptModel != null) {
+            userModel.setDeptName(companyDeptModel.getDeptName());
         }
         return ResponseUtil.success(userModel);
     }

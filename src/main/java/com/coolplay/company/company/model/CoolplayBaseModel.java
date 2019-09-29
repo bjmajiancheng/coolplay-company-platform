@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.persistence.*;
 
@@ -85,7 +86,7 @@ public class CoolplayBaseModel extends Sortable {
 	private String majorProject;//"主营项目"
 
 	@Column(name = "open_time")
-	private Date openTime;//"开放时间"
+	private String openTime;//"开放时间"
 
 	@Column(name = "contact_name")
 	private String contactName;//"联系人"
@@ -112,6 +113,14 @@ public class CoolplayBaseModel extends Sortable {
 	private Date ctime;//"创建时间"
 
 	//columns END
+	@Transient
+	private String companyUserName;//"创建人名称"
+
+	@Transient
+	private List<Integer> labelIds;//"标签集合"
+
+	@Transient
+	private String labelName = "";//"标签名称"
 		
 	public void setId(Integer id) {
 		this.id = id;
@@ -265,11 +274,11 @@ public class CoolplayBaseModel extends Sortable {
 		return this.majorProject;
 	}
 		
-	public void setOpenTime(Date openTime) {
+	public void setOpenTime(String openTime) {
 		this.openTime = openTime;
 	}
 
-	public Date getOpenTime() {
+	public String getOpenTime() {
 		return this.openTime;
 	}
 		
@@ -337,5 +346,28 @@ public class CoolplayBaseModel extends Sortable {
 		return this.ctime;
 	}
 
+	public String getCompanyUserName() {
+		return companyUserName;
+	}
+
+	public void setCompanyUserName(String companyUserName) {
+		this.companyUserName = companyUserName;
+	}
+
+	public List<Integer> getLabelIds() {
+		return labelIds;
+	}
+
+	public void setLabelIds(List<Integer> labelIds) {
+		this.labelIds = labelIds;
+	}
+
+	public String getLabelName() {
+		return labelName;
+	}
+
+	public void setLabelName(String labelName) {
+		this.labelName = labelName;
+	}
 }
 

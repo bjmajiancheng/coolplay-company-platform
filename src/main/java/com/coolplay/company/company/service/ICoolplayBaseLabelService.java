@@ -32,4 +32,6 @@ public interface ICoolplayBaseLabelService extends IBaseService<CoolplayBaseLabe
 
 	public List<CoolplayBaseLabelModel> selectByFilter(CoolplayBaseLabelModel coolplayBaseLabelModel);
 
+	Map<Integer, List<CoolplayBaseLabelModel>> findMapByBaseIds(List<Integer> baseIds);
+
 }

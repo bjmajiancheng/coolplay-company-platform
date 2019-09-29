@@ -32,4 +32,6 @@ public interface ICirclePublicService extends IBaseService<CirclePublicModel> {
 
 	public List<CirclePublicModel> selectByFilter(CirclePublicModel circlePublicModel);
 
+	public CirclePublicModel findLastPublicByCircleId(Integer circleId);
+
 }

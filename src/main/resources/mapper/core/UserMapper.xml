@@ -29,6 +29,22 @@
 	    ]]>
     </sql>
 
+    <sql id="findWhere">
+        <where>
+            <if test="userIds != null">
+                AND id IN
+                <foreach collection="userIds" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <select id="find" resultMap="BaseResultMap">
+        SELECT <include refid="columns"/> FROM d_company_user
+        <include refid="findWhere"/>
+    </select>
+
     <select id="findUserByLoginName" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
         <include refid="columns"/>

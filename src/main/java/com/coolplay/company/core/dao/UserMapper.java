@@ -7,6 +7,7 @@ import tk.mybatis.mapper.common.Mapper;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by majiancheng on 2019/9/16.
@@ -37,4 +38,6 @@ public interface UserMapper extends Mapper<UserModel> {
             @Param("remoteAddr") String remoteAddr);
 
     public UserModel findUserByUserId(@Param("userId")int userId);
+
+    public List<UserModel> find(Map<String, Object> param);
 }

@@ -12,11 +12,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.coolplay.company.common.baseservice.impl.BaseService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.coolplay.company.company.model.CirclePublicModel;
+import com.coolplay.company.company.model.CategoryModel;
 import tk.mybatis.mapper.entity.Example;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -25,7 +26,6 @@ import org.apache.commons.lang.StringUtils;
 import java.util.*;
 import com.coolplay.company.company.dao.*;
 import com.coolplay.company.company.service.*;
-import com.coolplay.company.common.baseservice.impl.BaseService;
 
 /**
  * @author  davdian
@@ -33,46 +33,40 @@ import com.coolplay.company.common.baseservice.impl.BaseService;
  * @since 1.0
  */
 
-@Service("circlePublicService")
-public class CirclePublicServiceImpl extends BaseService<CirclePublicModel> implements ICirclePublicService{
+@Service("categoryService")
+public class CategoryServiceImpl extends BaseService<CategoryModel> implements ICategoryService{
 	@Autowired
-	private CirclePublicMapper circlePublicMapper;
+	private CategoryMapper categoryMapper;
 	
 	@Override
-	public CirclePublicModel findById(Integer id) {
+	public CategoryModel findById(Integer id) {
 		if(id == null) {
 			return null;
 		}
-		return circlePublicMapper.findById(id);
+		return categoryMapper.findById(id);
 	}
 
 
-	public List<CirclePublicModel> find(Map<String, Object> param) {
-		return circlePublicMapper.find(param);
+	public List<CategoryModel> find(Map<String, Object> param) {
+		return categoryMapper.find(param);
 	}
 
 	@Override
-	public PageInfo<CirclePublicModel> selectByFilterAndPage(CirclePublicModel circlePublicModel, int pageNum,
+	public PageInfo<CategoryModel> selectByFilterAndPage(CategoryModel categoryModel, int pageNum,
 		int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
-		List<CirclePublicModel> list = this.selectByFilter(circlePublicModel);
+		List<CategoryModel> list = this.selectByFilter(categoryModel);
 		return new PageInfo<>(list);
 	}
 
 	@Override
-	public List<CirclePublicModel> selectByFilter(CirclePublicModel circlePublicModel) {
-		Example example = new Example(CirclePublicModel.class);
+	public List<CategoryModel> selectByFilter(CategoryModel categoryModel) {
+		Example example = new Example(CategoryModel.class);
 		Example.Criteria criteria = example.createCriteria();
 
-		if(StringUtils.isNotEmpty(circlePublicModel.getSortWithOutOrderBy())) {
-			example.setOrderByClause(circlePublicModel.getSortWithOutOrderBy());
+		if(StringUtils.isNotEmpty(categoryModel.getSortWithOutOrderBy())) {
+			example.setOrderByClause(categoryModel.getSortWithOutOrderBy());
 		}
 		return getMapper().selectByExample(example);
-	}
-
-
-	@Override
-	public CirclePublicModel findLastPublicByCircleId(Integer circleId) {
-		return circlePublicMapper.findLastPublicByCircleId(circleId);
 	}
 }

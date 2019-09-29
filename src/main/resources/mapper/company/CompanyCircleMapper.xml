@@ -43,6 +43,10 @@
 		<include refid="findWhere"/>
     </select>
 
-	
+	<select id="findById" resultMap="CompanyCircle">
+		SELECT <include refid="columns"/> FROM d_company_circle
+		WHERE id = #{id}
+	</select>
+
 </mapper>
 

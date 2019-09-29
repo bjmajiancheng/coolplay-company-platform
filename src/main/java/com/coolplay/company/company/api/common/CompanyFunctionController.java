@@ -49,6 +49,14 @@ public class CompanyFunctionController {
     @RequestMapping(value = "/getCompanyFunction", method = RequestMethod.GET)
     public Result getCompanyFunction(@RequestParam("id") int id) {
         FunctionModel functionModel = functionService.selectById(id);
+        functionModel.setParentFunctionName("");
+
+        if(functionModel != null && functionModel.getParentId() != null) {
+            FunctionModel parentFunctionModel = functionService.selectById(functionModel.getParentId());
+            if(parentFunctionModel != null) {
+                functionModel.setParentFunctionName(parentFunctionModel.getFunctionName());
+            }
+        }
 
         return ResponseUtil.success(functionModel);
     }
