@@ -61,6 +61,7 @@ public class CompanyController {
         SecurityUser securityUser = SecurityUtil.getCurrentSecurityUser();
         RoleModel roleModel = new RoleModel();
         roleModel.setCompanyId(securityUser.getCompanyId());
+        roleModel.setStatus(1);
         List<RoleModel> roleModels = roleService.selectByFilter(roleModel);
 
         return ResponseUtil.success(PageConvertUtil.grid(roleModels));
@@ -72,6 +73,7 @@ public class CompanyController {
         SecurityUser securityUser = SecurityUtil.getCurrentSecurityUser();
         CompanyDeptModel companyDeptModel = new CompanyDeptModel();
         companyDeptModel.setCompanyId(securityUser.getCompanyId());
+        companyDeptModel.setStatus(1);
         List<CompanyDeptModel> companyDeptModels = companyDeptService.selectByFilter(companyDeptModel);
 
         return ResponseUtil.success(PageConvertUtil.grid(companyDeptModels));

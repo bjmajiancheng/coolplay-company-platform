@@ -16,6 +16,7 @@ import com.coolplay.company.security.utils.SecurityUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -135,13 +136,20 @@ public class CompanyUserController {
     @ResponseBody
     @RequestMapping(value="/saveUser", method = RequestMethod.POST)
     public Result saveUser(UserModel userModel) {
-        userModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
-        int saveCnt = userService.saveNotNull(userModel);
+        try{
+            userModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
+            int saveCnt = userService.saveNotNull(userModel);
 
-        UserRoleModel userRoleModel = new UserRoleModel();
-        userRoleModel.setUserId(userModel.getId());
-        userRoleModel.setRoleId(userModel.getRoleId());
-        companyUserRoleService.saveNotNull(userRoleModel);
+            UserRoleModel userRoleModel = new UserRoleModel();
+            userRoleModel.setUserId(userModel.getId());
+            userRoleModel.setRoleId(userModel.getRoleId());
+            companyUserRoleService.saveNotNull(userRoleModel);
+        } catch(DuplicateKeyException e) {
+            e.printStackTrace();
+            return ResponseUtil.error("用户名已占用, 请更换其他用户名!!");
+        } catch(Exception e) {
+            return ResponseUtil.error("系统异常, 请稍后重试!!");
+        }
 
         return ResponseUtil.success();
     }

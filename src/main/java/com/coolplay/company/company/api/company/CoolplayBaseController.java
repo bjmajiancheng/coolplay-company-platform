@@ -9,12 +9,14 @@ import com.coolplay.company.company.model.CoolplayBaseModel;
 import com.coolplay.company.company.service.ICoolplayBaseLabelService;
 import com.coolplay.company.company.service.ICoolplayBaseService;
 import com.coolplay.company.core.model.UserModel;
+import com.coolplay.company.core.model.UserRoleModel;
 import com.coolplay.company.security.service.IUserService;
 import com.coolplay.company.security.utils.SecurityUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -131,21 +133,30 @@ public class CoolplayBaseController {
     @ResponseBody
     @RequestMapping(value="/saveCoolplayBase", method = RequestMethod.POST)
     public Result saveCoolplayBase(CoolplayBaseModel coolplayBaseModel) {
-        coolplayBaseModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
-        coolplayBaseModel.setCompanyUserId(SecurityUtil.getCurrentUserId());
-        coolplayBaseModel.setIsClose(1);
-        coolplayBaseModel.setIsDel(0);
-        int saveCnt = coolplayBaseService.saveNotNull(coolplayBaseModel);
 
-        if(CollectionUtils.isNotEmpty(coolplayBaseModel.getLabelIds())) {
-            for(Integer labelId : coolplayBaseModel.getLabelIds()) {
-                CoolplayBaseLabelModel baseLabelModel = new CoolplayBaseLabelModel();
-                baseLabelModel.setLabelId(labelId);
-                baseLabelModel.setCoolplayBaseId(coolplayBaseModel.getId());
-                baseLabelModel.setCtime(new Date());
+        try{
+            coolplayBaseModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
+            coolplayBaseModel.setCompanyUserId(SecurityUtil.getCurrentUserId());
+            coolplayBaseModel.setIsClose(0);
+            coolplayBaseModel.setIsDel(0);
+            int saveCnt = coolplayBaseService.saveNotNull(coolplayBaseModel);
 
-                coolplayBaseLabelService.saveNotNull(baseLabelModel);
+            if(CollectionUtils.isNotEmpty(coolplayBaseModel.getLabelIds())) {
+                for(Integer labelId : coolplayBaseModel.getLabelIds()) {
+                    CoolplayBaseLabelModel baseLabelModel = new CoolplayBaseLabelModel();
+                    baseLabelModel.setLabelId(labelId);
+                    baseLabelModel.setCoolplayBaseId(coolplayBaseModel.getId());
+                    baseLabelModel.setCtime(new Date());
+
+                    coolplayBaseLabelService.saveNotNull(baseLabelModel);
+                }
             }
+
+        } catch(DuplicateKeyException e) {
+            e.printStackTrace();
+            return ResponseUtil.error("基地昵称不能重复, 请更换基地昵称!!");
+        } catch(Exception e) {
+            return ResponseUtil.error("系统异常, 请稍后重试!!");
         }
 
         return ResponseUtil.success();
