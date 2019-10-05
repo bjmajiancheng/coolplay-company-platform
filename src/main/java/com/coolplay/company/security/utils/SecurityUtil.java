@@ -27,6 +27,9 @@ public class SecurityUtil {
     }
 
     public static SecurityUser getCurrentSecurityUser() {
+        if(SecurityContextHolder.getContext().getAuthentication() == null)
+            return null;
+
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof SecurityUser) return (SecurityUser) principal;
         return null;

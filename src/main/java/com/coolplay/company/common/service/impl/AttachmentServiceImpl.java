@@ -36,11 +36,16 @@ public class AttachmentServiceImpl extends BaseService<Attachment> implements IA
     @Override
     public Attachment uploadFileAttachement(HttpServletRequest request, MultipartFile file, String dirName,
             long maxSize, HashMap<String, String> extLimitMap, Integer suffix) throws IOException {
+
+        String currentUserName = "system";
+        if(SecurityUtil.getCurrentSecurityUser() != null) {
+            currentUserName = SecurityUtil.getCurrentSecurityUser().getUserName();
+        }
+
         //文件保存路径
-        String savePath = request.getSession().getServletContext().getRealPath("/") + uploadFolder + "/" + SecurityUtil
-                .getCurrentUserName() + "/";
+        String savePath = request.getSession().getServletContext().getRealPath("/") + uploadFolder + "/" + currentUserName + "/";
         // 文件保存目录URL
-        String saveUrl = request.getContextPath() + "/" + uploadFolder + "/" + SecurityUtil.getCurrentUserName() + "/";
+        String saveUrl = request.getContextPath() + "/" + uploadFolder + "/" + currentUserName + "/";
         File targetFile = new File(savePath);
         if (!targetFile.exists()) {
             targetFile.mkdirs();
@@ -80,7 +85,7 @@ public class AttachmentServiceImpl extends BaseService<Attachment> implements IA
         attachment.setAttachmentPath(savePath + newFileName);
         attachment.setAttachmentUrl(saveUrl + newFileName);
         attachment.setAttachmentName(fileName);
-        attachment.setUploadLoginName(SecurityUtil.getCurrentUserName());
+        attachment.setUploadLoginName(currentUserName);
         attachment.setAttachmentSuffix(fileExt);
         attachment.setAttachmentType(suffix);
         attachment.setAttachmentSize(file.getSize());

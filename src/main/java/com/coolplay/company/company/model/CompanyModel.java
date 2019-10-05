@@ -48,6 +48,9 @@ public class CompanyModel extends Sortable {
 	@Column(name = "company_desc")
 	private String companyDesc;//"公司简介"
 
+	@Column(name = "company_type")
+	private Integer companyType;//"公司类型"
+
 	@Column(name = "major_project")
 	private String majorProject;//"主营项目"
 
@@ -143,7 +146,15 @@ public class CompanyModel extends Sortable {
 	public String getCompanyDesc() {
 		return this.companyDesc;
 	}
-		
+
+	public Integer getCompanyType() {
+		return companyType;
+	}
+
+	public void setCompanyType(Integer companyType) {
+		this.companyType = companyType;
+	}
+
 	public void setMajorProject(String majorProject) {
 		this.majorProject = majorProject;
 	}

@@ -12,7 +12,8 @@
         <result property="contactName" column="contact_name"/>
         <result property="contactAddress" column="contact_address"/>
         <result property="contactMobile" column="contact_mobile"/>
-        <result property="companyDesc" column="company_desc"/>
+		<result property="companyDesc" column="company_desc"/>
+		<result property="companyType" column="company_type"/>
         <result property="majorProject" column="major_project"/>
         <result property="companyEmail" column="company_email"/>
         <result property="legalName" column="legal_name"/>
@@ -31,7 +32,7 @@
 	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-        id ,company_full_name ,company_name ,contact_name ,contact_address ,contact_mobile ,company_desc ,major_project ,company_email ,legal_name ,legal_idcard ,idcard_positive_photo ,idcard_negative_photo ,business_license_url ,review_status ,read_cnt ,status ,reject_reason ,is_del ,c_time 
+        id ,company_full_name ,company_name ,contact_name ,contact_address ,contact_mobile ,company_desc , company_type ,major_project ,company_email ,legal_name ,legal_idcard ,idcard_positive_photo ,idcard_negative_photo ,business_license_url ,review_status ,read_cnt ,status ,reject_reason ,is_del ,c_time
 	    ]]>
 	</sql>
 

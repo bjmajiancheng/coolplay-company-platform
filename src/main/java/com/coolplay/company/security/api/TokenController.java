@@ -2,6 +2,10 @@ package com.coolplay.company.security.api;
 
 import com.coolplay.company.common.tools.RedisCache;
 import com.coolplay.company.common.utils.HttpResponseUtil;
+import com.coolplay.company.common.utils.ResponseUtil;
+import com.coolplay.company.common.utils.Result;
+import com.coolplay.company.company.model.CompanyModel;
+import com.coolplay.company.company.service.ICompanyService;
 import com.coolplay.company.security.constants.SecurityConstant;
 import com.coolplay.company.security.security.AuthenticationRequest;
 import com.coolplay.company.security.security.HttpAuthenticationDetails;
@@ -24,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -51,6 +56,9 @@ public class TokenController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private ICompanyService companyService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> authenticationRequest(HttpServletRequest request,
@@ -95,5 +103,15 @@ public class TokenController {
         userService.updateLastLoginInfoByUserName(authenticationRequest.getUsername(), new Date(),
                 request.getRemoteAddr());
         return ResponseEntity.ok(HttpResponseUtil.success(token));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public Result updateCompany(CompanyModel companyModel) {
+        companyModel.setCompanyType(1);
+
+        int cnt = companyService.saveNotNull(companyModel);
+
+        return ResponseUtil.success();
     }
 }
