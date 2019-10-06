@@ -12,6 +12,7 @@ import com.coolplay.company.core.model.UserRoleModel;
 import com.coolplay.company.security.security.CoolplayUserCache;
 import com.coolplay.company.security.service.IRoleService;
 import com.coolplay.company.security.service.IUserService;
+import com.coolplay.company.security.utils.SecurityUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public class CompanyCircleController {
             @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
             @RequestParam(value = "rows", required = false, defaultValue = "15") int pageSize) {
 
+        companyCircleModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
         PageInfo<CompanyCircleModel> pageInfo = companyCircleService
                 .selectByFilterAndPage(companyCircleModel, pageNum, pageSize);
         if (CollectionUtils.isNotEmpty(pageInfo.getList())) {

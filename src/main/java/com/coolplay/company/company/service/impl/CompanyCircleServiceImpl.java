@@ -80,6 +80,10 @@ public class CompanyCircleServiceImpl extends BaseService<CompanyCircleModel> im
 			criteria.andEqualTo("reviewStatus", companyCircleModel.getReviewStatus());
 		}
 
+		if(companyCircleModel.getCompanyId() != null) {
+			criteria.andEqualTo("companyId", companyCircleModel.getCompanyId());
+		}
+
 		if(StringUtils.isNotEmpty(companyCircleModel.getSortWithOutOrderBy())) {
 			example.setOrderByClause(companyCircleModel.getSortWithOutOrderBy());
 		}
