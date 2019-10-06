@@ -93,6 +93,9 @@ public class UserServiceImpl extends BaseService<UserModel> implements IUserServ
         if (StringUtils.isNotEmpty(userModel.getUserName())) {
             criteria.andLike("userName", "%" + userModel.getUserName() + "%");
         }
+        if(userModel.getCompanyId() != null) {
+            criteria.andEqualTo("companyId", userModel.getCompanyId());
+        }
         if (StringUtils.isNotEmpty(userModel.getSortWithOutOrderBy())) {
             example.setOrderByClause(userModel.getSortWithOutOrderBy());
         }

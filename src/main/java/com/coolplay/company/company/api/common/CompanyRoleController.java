@@ -47,6 +47,7 @@ public class CompanyRoleController {
             @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
             @RequestParam(value = "rows", required = false, defaultValue = "15") int pageSize) {
         roleModel.setStatus(1);
+        roleModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
         PageInfo<RoleModel> pageInfo = roleService.selectByFilterAndPage(roleModel, pageNum, pageSize);
 
         return PageConvertUtil.grid(pageInfo);

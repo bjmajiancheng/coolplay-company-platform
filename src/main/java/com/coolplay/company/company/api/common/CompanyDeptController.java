@@ -32,6 +32,7 @@ public class CompanyDeptController {
             @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
             @RequestParam(value = "rows", required = false, defaultValue = "15") int pageSize) {
         companyDeptModel.setStatus(1);
+        companyDeptModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
         PageInfo<CompanyDeptModel> pageInfo = companyDeptService
                 .selectByFilterAndPage(companyDeptModel, pageNum, pageSize);
 

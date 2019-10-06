@@ -50,6 +50,9 @@ public class CompanyDeptServiceImpl extends BaseService<CompanyDeptModel> implem
         if (companyDeptModel.getStatus() != null) {
             criteria.andEqualTo("status", companyDeptModel.getStatus());
         }
+        if(companyDeptModel.getCompanyId() != null) {
+            criteria.andEqualTo("companyId", companyDeptModel.getCompanyId());
+        }
         if (StringUtils.isNotEmpty(companyDeptModel.getSortWithOutOrderBy())) {
             example.setOrderByClause(companyDeptModel.getSortWithOutOrderBy());
         }
