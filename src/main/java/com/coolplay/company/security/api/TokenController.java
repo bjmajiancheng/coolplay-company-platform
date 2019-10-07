@@ -4,12 +4,15 @@ import com.coolplay.company.common.tools.RedisCache;
 import com.coolplay.company.common.utils.HttpResponseUtil;
 import com.coolplay.company.common.utils.ResponseUtil;
 import com.coolplay.company.common.utils.Result;
+import com.coolplay.company.company.model.CompanyLogModel;
 import com.coolplay.company.company.model.CompanyModel;
+import com.coolplay.company.company.service.ICompanyLogService;
 import com.coolplay.company.company.service.ICompanyService;
 import com.coolplay.company.security.constants.SecurityConstant;
 import com.coolplay.company.security.security.AuthenticationRequest;
 import com.coolplay.company.security.security.HttpAuthenticationDetails;
 import com.coolplay.company.security.service.IUserService;
+import com.coolplay.company.security.utils.SecurityUtil;
 import com.coolplay.company.security.utils.TokenUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -60,6 +63,9 @@ public class TokenController {
     @Autowired
     private ICompanyService companyService;
 
+    @Autowired
+    private ICompanyLogService companyLogService;
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> authenticationRequest(HttpServletRequest request,
             @RequestBody AuthenticationRequest authenticationRequest) throws AuthenticationException {
@@ -102,6 +108,14 @@ public class TokenController {
         String token = this.tokenUtils.generateToken(userDetails);
         userService.updateLastLoginInfoByUserName(authenticationRequest.getUsername(), new Date(),
                 request.getRemoteAddr());
+
+        CompanyLogModel companyLogModel = new CompanyLogModel();
+        companyLogModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
+        companyLogModel.setIp(request.getRemoteAddr());
+        companyLogModel.setUserName(authenticationRequest.getUsername());
+        companyLogModel.setCtime(new Date());
+        companyLogService.saveNotNull(companyLogModel);
+
         return ResponseEntity.ok(HttpResponseUtil.success(token));
     }
 
