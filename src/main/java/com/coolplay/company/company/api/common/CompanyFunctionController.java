@@ -123,7 +123,7 @@ public class CompanyFunctionController {
         List<TreeNode> treeNodes = functionService.getFunctionTreeNodes(functionModel);
 
         List<TreeNode> newTreeNodes = new ArrayList<TreeNode>();
-        if(CollectionUtils.isEmpty(treeNodes)) {
+        if(CollectionUtils.isNotEmpty(treeNodes)) {
             for(TreeNode treeNode : treeNodes) {
                 if(treeNode.getId() != 4) {
                     newTreeNodes.add(treeNode);
