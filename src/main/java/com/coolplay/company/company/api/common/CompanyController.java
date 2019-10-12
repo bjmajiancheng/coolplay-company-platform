@@ -50,6 +50,9 @@ public class CompanyController {
     @ResponseBody
     @RequestMapping(value = "/updateCompany", method = RequestMethod.POST)
     public Result updateCompany(CompanyModel companyModel) {
+        companyModel.setReviewStatus(0);
+        companyModel.setStatus(0);
+        companyModel.setRejectReason("");
         int cnt = companyService.updateNotNull(companyModel);
 
         return ResponseUtil.success();

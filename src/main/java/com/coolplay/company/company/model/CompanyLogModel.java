@@ -33,6 +33,9 @@ public class CompanyLogModel extends Sortable {
 	@Column(name = "company_id")
 	private Integer companyId;//"公司ID"
 
+	@Column(name = "user_id")
+	private Integer userId;//"用户ID"
+
 	@Column(name = "user_name")
 	private String userName;//"用户名称"
 
@@ -58,7 +61,15 @@ public class CompanyLogModel extends Sortable {
 	public Integer getCompanyId() {
 		return this.companyId;
 	}
-		
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}

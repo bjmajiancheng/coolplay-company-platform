@@ -2,6 +2,7 @@ package com.coolplay.company.security.api;
 
 import com.coolplay.company.common.tools.RedisCache;
 import com.coolplay.company.common.utils.HttpResponseUtil;
+import com.coolplay.company.common.utils.RequestUtil;
 import com.coolplay.company.common.utils.ResponseUtil;
 import com.coolplay.company.common.utils.Result;
 import com.coolplay.company.company.model.CompanyLogModel;
@@ -101,17 +102,18 @@ public class TokenController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails userDetails = (UserDetails) redisCache
                 .get(SecurityConstant.USER_CACHE_PREFIX + authenticationRequest.getUsername());
-        if (userDetails == null) {
+        if (userDetails == null)  {
             userDetails = this.userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
             redisCache.set(SecurityConstant.USER_CACHE_PREFIX + authenticationRequest.getUsername(), userDetails);
         }
         String token = this.tokenUtils.generateToken(userDetails);
         userService.updateLastLoginInfoByUserName(authenticationRequest.getUsername(), new Date(),
-                request.getRemoteAddr());
+                RequestUtil.getIpAddress(request));
 
         CompanyLogModel companyLogModel = new CompanyLogModel();
         companyLogModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
-        companyLogModel.setIp(request.getRemoteAddr());
+        companyLogModel.setIp(RequestUtil.getIpAddress(request));
+        companyLogModel.setUserId(SecurityUtil.getCurrentUserId());
         companyLogModel.setUserName(authenticationRequest.getUsername());
         companyLogModel.setCtime(new Date());
         companyLogService.saveNotNull(companyLogModel);

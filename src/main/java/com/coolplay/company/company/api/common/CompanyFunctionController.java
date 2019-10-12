@@ -4,10 +4,12 @@ import com.alibaba.druid.util.StringUtils;
 import com.coolplay.company.common.utils.PageConvertUtil;
 import com.coolplay.company.common.utils.ResponseUtil;
 import com.coolplay.company.common.utils.Result;
+import com.coolplay.company.common.utils.TreeNode;
 import com.coolplay.company.company.model.CompanyDeptModel;
 import com.coolplay.company.core.model.FunctionModel;
 import com.coolplay.company.security.service.IFunctionService;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -116,7 +120,17 @@ public class CompanyFunctionController {
     @ResponseBody
     @RequestMapping(value = "/treeNodes", method = RequestMethod.POST)
     public Object treeNodes(FunctionModel functionModel) {
-        return functionService.getFunctionTreeNodes(functionModel);
+        List<TreeNode> treeNodes = functionService.getFunctionTreeNodes(functionModel);
+
+        List<TreeNode> newTreeNodes = new ArrayList<TreeNode>();
+        if(CollectionUtils.isEmpty(treeNodes)) {
+            for(TreeNode treeNode : treeNodes) {
+                if(treeNode.getId() != 4) {
+                    newTreeNodes.add(treeNode);
+                }
+            }
+        }
+        return newTreeNodes;
     }
 
 }
