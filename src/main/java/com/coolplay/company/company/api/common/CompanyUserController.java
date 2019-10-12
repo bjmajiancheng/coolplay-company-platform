@@ -93,11 +93,18 @@ public class CompanyUserController {
         List<UserRoleModel> userRoleModels = userService.selectUserRoleByUserId(userId);
 
         if(CollectionUtils.isNotEmpty(userRoleModels)) {
-            userModel.setRoleId(userRoleModels.get(0).getRoleId());
-            RoleModel roleModel = roleService.selectById(userRoleModels.get(0).getRoleId());
-            if(roleModel != null) {
-                userModel.setRoleName(roleModel.getRoleName());
+            StringBuffer sb = new StringBuffer();
+            List<Integer> roleIds = new ArrayList<Integer>();
+            for(UserRoleModel userRoleModel : userRoleModels) {
+                roleIds.add(userRoleModel.getRoleId());
+                if(sb.length() > 0) {
+                    sb.append("、");
+                }
+                RoleModel roleModel = roleService.selectById(userRoleModel.getRoleId());
+                sb.append(roleModel.getRoleName());
             }
+            userModel.setRoleIds(roleIds);
+            userModel.setRoleName(sb.toString());
         }
 
         CompanyDeptModel companyDeptModel = companyDeptService.selectById(userModel.getDeptId());
@@ -126,10 +133,15 @@ public class CompanyUserController {
         int updateCnt = userService.updateNotNull(userModel);
 
         int delCnt = companyUserRoleService.deleteByUserId(userModel.getId());
-        UserRoleModel userRoleModel = new UserRoleModel();
-        userRoleModel.setUserId(userModel.getId());
-        userRoleModel.setRoleId(userModel.getRoleId());
-        companyUserRoleService.saveNotNull(userRoleModel);
+
+        if(CollectionUtils.isNotEmpty(userModel.getRoleIds())) {
+            for(Integer roleId : userModel.getRoleIds()) {
+                UserRoleModel userRoleModel = new UserRoleModel();
+                userRoleModel.setUserId(userModel.getId());
+                userRoleModel.setRoleId(roleId);
+                companyUserRoleService.saveNotNull(userRoleModel);
+            }
+        }
 
         return ResponseUtil.success();
     }
@@ -141,10 +153,14 @@ public class CompanyUserController {
             userModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
             int saveCnt = userService.saveNotNull(userModel);
 
-            UserRoleModel userRoleModel = new UserRoleModel();
-            userRoleModel.setUserId(userModel.getId());
-            userRoleModel.setRoleId(userModel.getRoleId());
-            companyUserRoleService.saveNotNull(userRoleModel);
+            if(CollectionUtils.isNotEmpty(userModel.getRoleIds())) {
+                for(Integer roleId : userModel.getRoleIds()) {
+                    UserRoleModel userRoleModel = new UserRoleModel();
+                    userRoleModel.setUserId(userModel.getId());
+                    userRoleModel.setRoleId(roleId);
+                    companyUserRoleService.saveNotNull(userRoleModel);
+                }
+            }
         } catch(DuplicateKeyException e) {
             e.printStackTrace();
             return ResponseUtil.error("用户名已占用, 请更换其他用户名!!");
