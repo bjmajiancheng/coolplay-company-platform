@@ -41,7 +41,7 @@ public class CoolplayBaseModel extends Sortable {
 	private String baseDesc;//"基地基本信息"
 
 	@Column(name = "base_type")
-	private Integer baseType;//"基地类型"
+	private String baseType;//"基地类型"
 
 	@Column(name = "capacity_cnt")
 	private Integer capacityCnt;//"容纳人数"
@@ -154,11 +154,11 @@ public class CoolplayBaseModel extends Sortable {
 		return this.baseDesc;
 	}
 		
-	public void setBaseType(Integer baseType) {
+	public void setBaseType(String baseType) {
 		this.baseType = baseType;
 	}
 
-	public Integer getBaseType() {
+	public String getBaseType() {
 		return this.baseType;
 	}
 		
