@@ -7,6 +7,9 @@ import com.coolplay.company.company.service.ICompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by majiancheng on 2019/9/19.
  */
@@ -18,5 +21,11 @@ public class CompanyServiceImpl extends BaseService<CompanyModel> implements ICo
 
     public CompanyModel findCompanyById(Integer id) {
         return companyMapper.findCompanyById(id);
+    }
+
+
+    @Override
+    public List<CompanyModel> find(Map<String, Object> param) {
+        return companyMapper.find(param);
     }
 }

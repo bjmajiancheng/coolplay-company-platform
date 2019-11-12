@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.persistence.*;
 
@@ -87,9 +88,18 @@ public class CompanyModel extends Sortable {
 	@Column(name = "is_del")
 	private Integer isDel;//"是否删除（0：未删除，1：已删除）"
 
+	@Column(name = "admin_user_name")
+	private String adminUserName;//"管理员后台账号"
+
+	@Column(name = "admin_password")
+	private String adminPassword;//"管理员后台密码"
+
 	@Column(name = "c_time")
 	private Date ctime;//"创建时间"
 	//columns END
+
+	@Transient
+	private List<Integer> industryIds;//行业Ids
 		
 	public void setId(Integer id) {
 		this.id = id;
@@ -250,7 +260,23 @@ public class CompanyModel extends Sortable {
 	public Integer getIsDel() {
 		return this.isDel;
 	}
-		
+
+	public String getAdminUserName() {
+		return adminUserName;
+	}
+
+	public void setAdminUserName(String adminUserName) {
+		this.adminUserName = adminUserName;
+	}
+
+	public String getAdminPassword() {
+		return adminPassword;
+	}
+
+	public void setAdminPassword(String adminPassword) {
+		this.adminPassword = adminPassword;
+	}
+
 	public void setCtime(Date ctime) {
 		this.ctime = ctime;
 	}
@@ -259,5 +285,12 @@ public class CompanyModel extends Sortable {
 		return this.ctime;
 	}
 
+	public List<Integer> getIndustryIds() {
+		return industryIds;
+	}
+
+	public void setIndustryIds(List<Integer> industryIds) {
+		this.industryIds = industryIds;
+	}
 }
 

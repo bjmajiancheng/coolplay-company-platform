@@ -5,16 +5,20 @@ import com.coolplay.company.common.utils.HttpResponseUtil;
 import com.coolplay.company.common.utils.RequestUtil;
 import com.coolplay.company.common.utils.ResponseUtil;
 import com.coolplay.company.common.utils.Result;
+import com.coolplay.company.company.model.CompanyIndustryModel;
 import com.coolplay.company.company.model.CompanyLogModel;
 import com.coolplay.company.company.model.CompanyModel;
+import com.coolplay.company.company.service.ICompanyIndustryService;
 import com.coolplay.company.company.service.ICompanyLogService;
 import com.coolplay.company.company.service.ICompanyService;
+import com.coolplay.company.core.model.UserModel;
 import com.coolplay.company.security.constants.SecurityConstant;
 import com.coolplay.company.security.security.AuthenticationRequest;
 import com.coolplay.company.security.security.HttpAuthenticationDetails;
 import com.coolplay.company.security.service.IUserService;
 import com.coolplay.company.security.utils.SecurityUtil;
 import com.coolplay.company.security.utils.TokenUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by majiancheng on 2019/9/15.
@@ -66,6 +70,9 @@ public class TokenController {
 
     @Autowired
     private ICompanyLogService companyLogService;
+
+    @Autowired
+    private ICompanyIndustryService companyIndustryService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> authenticationRequest(HttpServletRequest request,
@@ -126,7 +133,34 @@ public class TokenController {
     public Result updateCompany(CompanyModel companyModel) {
         companyModel.setCompanyType(1);
 
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("companyFullName", companyModel.getCompanyFullName());
+        param.put("isDel", 0);
+        List<CompanyModel> companyModels = companyService.find(param);
+        if(CollectionUtils.isNotEmpty(companyModels)) {
+            return ResponseUtil.error("公司全称已存在, 请修改公司全称");
+        }
+
+        UserModel userModel = userService.findUserByLoginName(companyModel.getAdminUserName());
+
+        param = new HashMap<String, Object>();
+        param.put("isDel", 0);
+        param.put("adminUserName", companyModel.getAdminUserName());
+        List<CompanyModel> validateCompanys = companyService.find(param);
+        if(userModel != null || CollectionUtils.isNotEmpty(validateCompanys)) {
+            return ResponseUtil.error("后台账号已占用, 请修改后台账号");
+        }
+
         int cnt = companyService.saveNotNull(companyModel);
+        if(CollectionUtils.isNotEmpty(companyModel.getIndustryIds())) {
+            for(Integer industryId : companyModel.getIndustryIds()) {
+                CompanyIndustryModel companyIndustry = new CompanyIndustryModel();
+                companyIndustry.setIndustryId(industryId);
+                companyIndustry.setCompanyId(companyModel.getId());
+
+                int saveCnt = companyIndustryService.saveNotNull(companyIndustry);
+            }
+        }
 
         return ResponseUtil.success();
     }
