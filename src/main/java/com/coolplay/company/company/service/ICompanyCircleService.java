@@ -30,6 +30,7 @@ public interface ICompanyCircleService extends IBaseService<CompanyCircleModel> 
 	public PageInfo<CompanyCircleModel> selectByFilterAndPage(CompanyCircleModel companyCircleModel, int pageNum,
 			int pageSize);
 
-	public List<CompanyCircleModel> selectByFilter(CompanyCircleModel companyCircleModel);
+	public List<CompanyCircleModel> selectByFilter(CompanyCircleModel companyCircleModel, int pageNum,
+			int pageSize);
 
 }

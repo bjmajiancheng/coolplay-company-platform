@@ -37,6 +37,9 @@ import com.coolplay.company.company.service.*;
 public class CompanyCircleServiceImpl extends BaseService<CompanyCircleModel> implements ICompanyCircleService{
 	@Autowired
 	private CompanyCircleMapper companyCircleMapper;
+
+	@Autowired
+	private CircleMapper circleMapper;
 	
 	@Override
 	public CompanyCircleModel findById(Integer id) {
@@ -54,13 +57,13 @@ public class CompanyCircleServiceImpl extends BaseService<CompanyCircleModel> im
 	@Override
 	public PageInfo<CompanyCircleModel> selectByFilterAndPage(CompanyCircleModel companyCircleModel, int pageNum,
 		int pageSize) {
-		PageHelper.startPage(pageNum, pageSize);
-		List<CompanyCircleModel> list = this.selectByFilter(companyCircleModel);
+		List<CompanyCircleModel> list = this.selectByFilter(companyCircleModel, pageNum, pageSize);
 		return new PageInfo<>(list);
 	}
 
 	@Override
-	public List<CompanyCircleModel> selectByFilter(CompanyCircleModel companyCircleModel) {
+	public List<CompanyCircleModel> selectByFilter(CompanyCircleModel companyCircleModel, int pageNum,
+			int pageSize) {
 		Example example = new Example(CompanyCircleModel.class);
 		Example.Criteria criteria = example.createCriteria();
 
@@ -73,7 +76,12 @@ public class CompanyCircleServiceImpl extends BaseService<CompanyCircleModel> im
 		}
 
 		if(StringUtils.isNotEmpty(companyCircleModel.getCircleName())) {
-			criteria.andLike("cricleName", "%" + companyCircleModel.getCircleName() +"%");
+			List<Integer> circleIds = circleMapper.findIdsByCircleName("%" + companyCircleModel.getCircleName() + "%");
+			if(CollectionUtils.isEmpty(circleIds)) {
+				circleIds = Collections.singletonList(0);
+			}
+
+			criteria.andIn("circleId", circleIds);
 		}
 
 		if(companyCircleModel.getReviewStatus() != null) {
@@ -87,6 +95,7 @@ public class CompanyCircleServiceImpl extends BaseService<CompanyCircleModel> im
 		if(StringUtils.isNotEmpty(companyCircleModel.getSortWithOutOrderBy())) {
 			example.setOrderByClause(companyCircleModel.getSortWithOutOrderBy());
 		}
+		PageHelper.startPage(pageNum, pageSize);
 		return getMapper().selectByExample(example);
 	}
 }
