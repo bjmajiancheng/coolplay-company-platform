@@ -69,4 +69,33 @@ public class CompanyIndustryServiceImpl extends BaseService<CompanyIndustryModel
 		}
 		return getMapper().selectByExample(example);
 	}
+
+	/**
+	 * 获取公司行业集合
+	 *
+	 * @param companyId
+	 * @return
+	 */
+	public List<CompanyIndustryModel> findByCompanyId(Integer companyId) {
+		if(companyId == null || companyId == 0) {
+			return Collections.emptyList();
+		}
+
+		return this.find(Collections.singletonMap("companyId", companyId));
+	}
+
+	/**
+	 * 根据企业ID删除企业行业关联信息
+	 *
+	 * @param companyId
+	 * @return
+	 */
+	public int delByCompanyId(Integer companyId) {
+		if(companyId == null || companyId == 0) {
+			return 0;
+		}
+
+		return companyIndustryMapper.delByCompanyId(companyId);
+	}
+
 }

@@ -11,10 +11,7 @@ import com.coolplay.company.common.handler.Sortable;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.persistence.*;
 
 /**
@@ -108,7 +105,7 @@ public class CompanyModel extends Sortable {
 	//columns END
 
 	@Transient
-	private List<Integer> industryIds;//行业Ids
+	private List<Integer> industryIds = new ArrayList<Integer>();//行业Ids
 		
 	public void setId(Integer id) {
 		this.id = id;

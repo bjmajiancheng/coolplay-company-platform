@@ -32,4 +32,20 @@ public interface ICompanyIndustryService extends IBaseService<CompanyIndustryMod
 
 	public List<CompanyIndustryModel> selectByFilter(CompanyIndustryModel companyIndustryModel);
 
+	/**
+	 * 获取公司行业集合
+	 *
+	 * @param companyId
+	 * @return
+     */
+	public List<CompanyIndustryModel> findByCompanyId(Integer companyId);
+
+	/**
+	 * 根据企业ID删除企业行业关联信息
+	 *
+	 * @param companyId
+	 * @return
+     */
+	public int delByCompanyId(Integer companyId);
+
 }

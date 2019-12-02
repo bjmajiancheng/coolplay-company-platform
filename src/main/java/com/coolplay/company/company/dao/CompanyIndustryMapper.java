@@ -26,4 +26,12 @@ public interface CompanyIndustryMapper extends Mapper<CompanyIndustryModel> {
 
 	public CompanyIndustryModel findById(@Param("id") Integer id);
 
+	/**
+	 * 根据企业ID删除企业行业关联信息
+	 *
+	 * @param companyId
+	 * @return
+	 */
+	public int delByCompanyId(@Param("companyId")Integer companyId);
+
 }

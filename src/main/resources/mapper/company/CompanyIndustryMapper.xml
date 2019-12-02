@@ -21,6 +21,9 @@
 
 	<sql id="findWhere">
 	    <where>
+			<if test="companyId != null">
+				AND company_id = #{companyId}
+			</if>
 	    </where>
 	</sql>
 
@@ -38,6 +41,10 @@
 		        id = #{id} 
 	    ]]>
 	</select>
+
+	<delete id="delByCompanyId">
+		DELETE FROM d_company_industry WHERE company_id = #{companyId}
+	</delete>
 	
 </mapper>
 
