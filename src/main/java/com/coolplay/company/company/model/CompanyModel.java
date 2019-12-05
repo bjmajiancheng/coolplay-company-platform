@@ -102,6 +102,9 @@ public class CompanyModel extends Sortable {
 
 	@Column(name = "c_time")
 	private Date ctime;//"创建时间"
+
+	@Column(name = "u_time")
+	private Date utime = new Date();//"更新时间"
 	//columns END
 
 	@Transient
@@ -313,6 +316,14 @@ public class CompanyModel extends Sortable {
 
 	public Date getCtime() {
 		return this.ctime;
+	}
+
+	public Date getUtime() {
+		return utime;
+	}
+
+	public void setUtime(Date utime) {
+		this.utime = utime;
 	}
 
 	public List<Integer> getIndustryIds() {
