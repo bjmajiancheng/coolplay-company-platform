@@ -10,6 +10,7 @@ import com.coolplay.company.company.service.ICoolplayBaseLabelService;
 import com.coolplay.company.company.service.ICoolplayBaseService;
 import com.coolplay.company.core.model.UserModel;
 import com.coolplay.company.core.model.UserRoleModel;
+import com.coolplay.company.security.security.SecurityUser;
 import com.coolplay.company.security.service.IUserService;
 import com.coolplay.company.security.utils.SecurityUtil;
 import com.github.pagehelper.PageInfo;
@@ -47,6 +48,9 @@ public class CoolplayBaseController {
             @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
             @RequestParam(value = "rows", required = false, defaultValue = "15") int pageSize) {
 
+        SecurityUser securityUser = SecurityUtil.getCurrentSecurityUser();
+
+        coolplayBaseModel.setCompanyId(securityUser.getCompanyId());
         coolplayBaseModel.setIsDel(0);
         PageInfo<CoolplayBaseModel> pageInfo = coolplayBaseService.selectByFilterAndPage(coolplayBaseModel, pageNum, pageSize);
 
