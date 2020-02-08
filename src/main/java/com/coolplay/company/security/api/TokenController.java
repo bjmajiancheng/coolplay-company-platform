@@ -144,7 +144,6 @@ public class TokenController {
         UserModel userModel = userService.findUserByLoginName(companyModel.getAdminUserName());
 
         param = new HashMap<String, Object>();
-        param.put("isDel", 0);
         param.put("adminUserName", companyModel.getAdminUserName());
         List<CompanyModel> validateCompanys = companyService.find(param);
         if(userModel != null || CollectionUtils.isNotEmpty(validateCompanys)) {

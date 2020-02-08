@@ -4,8 +4,10 @@ import com.coolplay.company.common.utils.PageConvertUtil;
 import com.coolplay.company.common.utils.ResponseUtil;
 import com.coolplay.company.common.utils.Result;
 import com.coolplay.company.company.model.CompanyDeptModel;
+import com.coolplay.company.company.model.UserPassMappingModel;
 import com.coolplay.company.company.service.ICompanyDeptService;
 import com.coolplay.company.company.service.ICompanyUserRoleService;
+import com.coolplay.company.company.service.IUserPassMappingService;
 import com.coolplay.company.core.model.RoleModel;
 import com.coolplay.company.core.model.UserModel;
 import com.coolplay.company.core.model.UserRoleModel;
@@ -52,6 +54,9 @@ public class CompanyUserController {
     @Autowired
     private ICompanyDeptService companyDeptService;
 
+    @Autowired
+    private IUserPassMappingService userPassMappingService;
+
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Map list(UserModel userModel,
@@ -93,6 +98,13 @@ public class CompanyUserController {
         UserModel userModel = userService.findUserByUserId(userId);
         List<UserRoleModel> userRoleModels = userService.selectUserRoleByUserId(userId);
 
+        if(StringUtils.isNotEmpty(userModel.getPassword())) {
+            UserPassMappingModel passMapping = userPassMappingService.findByPasswordEncode(userModel.getPassword());
+            if(passMapping != null) {
+                userModel.setPassword(passMapping.getPassword());
+            }
+        }
+
         if(CollectionUtils.isNotEmpty(userRoleModels)) {
             StringBuffer sb = new StringBuffer();
             List<Integer> roleIds = new ArrayList<Integer>();
@@ -102,6 +114,9 @@ public class CompanyUserController {
                     sb.append("、");
                 }
                 RoleModel roleModel = roleService.selectById(userRoleModel.getRoleId());
+                if(roleModel == null) {
+                    continue;
+                }
                 sb.append(roleModel.getRoleName());
             }
             userModel.setRoleIds(roleIds);
@@ -131,12 +146,23 @@ public class CompanyUserController {
     @ResponseBody
     @RequestMapping(value="/updateUser", method = RequestMethod.POST)
     public Result updateUser(UserModel userModel) {
+        if(StringUtils.isNotEmpty(userModel.getPassword())) {
+            String passwordEncode = SecurityUtil.encodeString(userModel.getPassword());
+
+            UserPassMappingModel userPassMappingModel = new UserPassMappingModel();
+            userPassMappingModel.setPassword(userModel.getPassword());
+            userPassMappingModel.setPasswordEncode(passwordEncode);
+            userPassMappingService.saveNotNull(userPassMappingModel);
+            userModel.setPassword(passwordEncode);
+        }
+
         int updateCnt = userService.updateNotNull(userModel);
 
         int delCnt = companyUserRoleService.deleteByUserId(userModel.getId());
 
         if(CollectionUtils.isNotEmpty(userModel.getRoleIds())) {
             for(Integer roleId : userModel.getRoleIds()) {
+                if(roleId == 0) continue;
                 UserRoleModel userRoleModel = new UserRoleModel();
                 userRoleModel.setUserId(userModel.getId());
                 userRoleModel.setRoleId(roleId);
@@ -168,13 +194,20 @@ public class CompanyUserController {
         try{
             userModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
             if(StringUtils.isNotEmpty(userModel.getPassword())) {
-                userModel.setPassword(SecurityUtil.encodeString(userModel.getPassword()));
+                String passwordEncode = SecurityUtil.encodeString(userModel.getPassword());
+
+                UserPassMappingModel userPassMappingModel = new UserPassMappingModel();
+                userPassMappingModel.setPassword(userModel.getPassword());
+                userPassMappingModel.setPasswordEncode(passwordEncode);
+                userPassMappingService.saveNotNull(userPassMappingModel);
+                userModel.setPassword(passwordEncode);
             }
 
             int saveCnt = userService.saveNotNull(userModel);
 
             if(CollectionUtils.isNotEmpty(userModel.getRoleIds())) {
                 for(Integer roleId : userModel.getRoleIds()) {
+                    if(roleId == 0) continue;
                     UserRoleModel userRoleModel = new UserRoleModel();
                     userRoleModel.setUserId(userModel.getId());
                     userRoleModel.setRoleId(roleId);
