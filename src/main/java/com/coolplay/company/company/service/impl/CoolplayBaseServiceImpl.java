@@ -72,6 +72,10 @@ public class CoolplayBaseServiceImpl extends BaseService<CoolplayBaseModel> impl
             criteria.andEqualTo("isClose", coolplayBaseModel.getIsClose());
         }
 
+        if (coolplayBaseModel.getCompanyId() != null) {
+            criteria.andEqualTo("companyId", coolplayBaseModel.getCompanyId());
+        }
+
         if(coolplayBaseModel.getIsDel() != null) {
             criteria.andEqualTo("isDel", coolplayBaseModel.getIsDel());
         }

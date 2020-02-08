@@ -15,6 +15,7 @@ import com.coolplay.company.security.service.IUserService;
 import com.coolplay.company.security.utils.SecurityUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
@@ -147,10 +148,29 @@ public class CompanyUserController {
     }
 
     @ResponseBody
+    @RequestMapping(value="/updateUserPassword", method = RequestMethod.POST)
+    public Result updateUserPassword(UserModel userModel) {
+        UserModel originUserModel = userService.findUserByUserId(userModel.getId());
+
+        boolean matchFlag = SecurityUtil.matchString(userModel.getPassword(), originUserModel.getPassword());
+        if(!matchFlag) {
+            return ResponseUtil.error("原密码错误, 请确认原始密码.");
+        }
+        userModel.setPassword(SecurityUtil.encodeString(userModel.getNewPassword()));
+        int updateCnt = userService.updateNotNull(userModel);
+
+        return ResponseUtil.success();
+    }
+
+    @ResponseBody
     @RequestMapping(value="/saveUser", method = RequestMethod.POST)
     public Result saveUser(UserModel userModel) {
         try{
             userModel.setCompanyId(SecurityUtil.getCurrentCompanyId());
+            if(StringUtils.isNotEmpty(userModel.getPassword())) {
+                userModel.setPassword(SecurityUtil.encodeString(userModel.getPassword()));
+            }
+
             int saveCnt = userService.saveNotNull(userModel);
 
             if(CollectionUtils.isNotEmpty(userModel.getRoleIds())) {

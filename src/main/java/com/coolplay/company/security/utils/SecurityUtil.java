@@ -52,7 +52,10 @@ public class SecurityUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(encodeString("admin"));
+        String encodePassword = encodeString("admin");
+        System.out.println(matchString("admin", encodePassword));
+        System.out.println(matchString("admin1", encodePassword));
+        System.out.println(matchString("admin", encodePassword));
     }
 
 }
