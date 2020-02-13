@@ -102,6 +102,8 @@ public class CompanyUserController {
             UserPassMappingModel passMapping = userPassMappingService.findByPasswordEncode(userModel.getPassword());
             if(passMapping != null) {
                 userModel.setPassword(passMapping.getPassword());
+            } else {
+                userModel.setPassword("");
             }
         }
 

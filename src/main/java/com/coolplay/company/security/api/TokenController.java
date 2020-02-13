@@ -138,7 +138,7 @@ public class TokenController {
         param.put("isDel", 0);
         List<CompanyModel> companyModels = companyService.find(param);
         if(CollectionUtils.isNotEmpty(companyModels)) {
-            return ResponseUtil.error("公司全称已存在, 请修改公司全称");
+            return ResponseUtil.error("企业全称已存在, 请修改企业全称");
         }
 
         UserModel userModel = userService.findUserByLoginName(companyModel.getAdminUserName());
@@ -147,7 +147,7 @@ public class TokenController {
         param.put("adminUserName", companyModel.getAdminUserName());
         List<CompanyModel> validateCompanys = companyService.find(param);
         if(userModel != null || CollectionUtils.isNotEmpty(validateCompanys)) {
-            return ResponseUtil.error("后台账号已占用, 请修改后台账号");
+            return ResponseUtil.error("企业登录账号已占用, 请修改企业登录账号");
         }
 
         int cnt = companyService.saveNotNull(companyModel);
