@@ -240,5 +240,45 @@ public class CompanyUserController {
         return ResponseUtil.success(userRoleMap.get(userId));
     }
 
+    /**
+     * 更新用户密码
+     *
+     * @param userModel
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updateUserPass", method = RequestMethod.POST)
+    public Result updateUserPass(UserModel userModel) {
+
+        try {
+            UserModel nativeUserModel = userService.findUserByUserId(SecurityUtil.getCurrentUserId());
+
+            if(! SecurityUtil.matchString(userModel.getPassword(), nativeUserModel.getPassword())) {
+                return ResponseUtil.error("原始密码不正确, 请修改原始密码。");
+            }
+
+            userModel.setId(SecurityUtil.getCurrentUserId());
+            if(StringUtils.isNotEmpty(userModel.getNewPassword())) {
+                String passwordEncode = SecurityUtil.encodeString(userModel.getNewPassword());
+
+                UserPassMappingModel userPassMappingModel = new UserPassMappingModel();
+                userPassMappingModel.setPassword(userModel.getNewPassword());
+                userPassMappingModel.setPasswordEncode(passwordEncode);
+                userPassMappingService.saveNotNull(userPassMappingModel);
+                userModel.setPassword(passwordEncode);
+            }
+
+            int updateCnt = userService.updateNotNull(userModel);
+
+            coolplayUserCache.removeUserFromCacheByUserId(userModel.getId());
+
+            return ResponseUtil.success();
+        } catch(Exception e) {
+            e.printStackTrace();
+
+            return ResponseUtil.error("系统异常, 请售后重试。");
+        }
+    }
+
 
 }

@@ -99,6 +99,9 @@ public class UserModel extends Sortable {
 
 	@Transient
 	private String newPassword;//新密码
+
+	@Transient
+	private String confirmPassword;//确认密码
 		
 	public void setId(Integer id) {
 		this.id = id;
@@ -258,6 +261,14 @@ public class UserModel extends Sortable {
 
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
+	}
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 }
 
