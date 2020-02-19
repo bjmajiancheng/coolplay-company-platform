@@ -1,5 +1,6 @@
 package com.coolplay.company.company.api.company;
 
+import com.alibaba.druid.util.StringUtils;
 import com.coolplay.company.common.utils.PageConvertUtil;
 import com.coolplay.company.common.utils.ResponseUtil;
 import com.coolplay.company.common.utils.Result;
@@ -137,6 +138,9 @@ public class CompanyCircleController {
         if (CollectionUtils.isNotEmpty(circleLabels)) {
             StringBuffer sb = new StringBuffer();
             for(CircleLabelModel circleLabelModel : circleLabels) {
+                if(circleLabelModel == null || StringUtils.isEmpty(circleLabelModel.getLabelName())) {
+                    continue;
+                }
                 if(sb.length() > 0) {
                     sb.append("、");
                 }
