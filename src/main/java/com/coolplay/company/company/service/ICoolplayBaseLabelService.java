@@ -34,4 +34,5 @@ public interface ICoolplayBaseLabelService extends IBaseService<CoolplayBaseLabe
 
 	Map<Integer, List<CoolplayBaseLabelModel>> findMapByBaseIds(List<Integer> baseIds);
 
+	public int delByBaseId(Integer baseId);
 }

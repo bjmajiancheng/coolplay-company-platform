@@ -26,4 +26,5 @@ public interface CoolplayBaseLabelMapper extends Mapper<CoolplayBaseLabelModel> 
 
 	public CoolplayBaseLabelModel findById(@Param("id") Integer id);
 
+	public int delByBaseId(@Param("baseId")Integer baseId);
 }

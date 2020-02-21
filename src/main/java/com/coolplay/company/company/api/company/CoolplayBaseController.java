@@ -97,14 +97,17 @@ public class CoolplayBaseController {
             List<CoolplayBaseLabelModel> baseLabelModels = baseLabelModelMap.get(id);
             if(CollectionUtils.isNotEmpty(baseLabelModels)) {
                 StringBuffer sb = new StringBuffer();
+                List<Integer> labelIds = new ArrayList<Integer>();
                 for(CoolplayBaseLabelModel baseLabelModel : baseLabelModels) {
                     if(sb.length() > 0) {
                         sb.append("、");
                     }
                     sb.append(baseLabelModel.getLabelName());
+                    labelIds.add(baseLabelModel.getLabelId());
                 }
 
                 coolplayBaseModel.setLabelName(sb.toString());
+                coolplayBaseModel.setLabelIds(labelIds);
             }
         }
 
@@ -145,6 +148,35 @@ public class CoolplayBaseController {
             coolplayBaseModel.setIsDel(0);
             int saveCnt = coolplayBaseService.saveNotNull(coolplayBaseModel);
 
+            if(CollectionUtils.isNotEmpty(coolplayBaseModel.getLabelIds())) {
+                for(Integer labelId : coolplayBaseModel.getLabelIds()) {
+                    CoolplayBaseLabelModel baseLabelModel = new CoolplayBaseLabelModel();
+                    baseLabelModel.setLabelId(labelId);
+                    baseLabelModel.setCoolplayBaseId(coolplayBaseModel.getId());
+                    baseLabelModel.setCtime(new Date());
+
+                    coolplayBaseLabelService.saveNotNull(baseLabelModel);
+                }
+            }
+
+        } catch(DuplicateKeyException e) {
+            e.printStackTrace();
+            return ResponseUtil.error("基地昵称不能重复, 请更换基地昵称!!");
+        } catch(Exception e) {
+            return ResponseUtil.error("系统异常, 请稍后重试!!");
+        }
+
+        return ResponseUtil.success();
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/updateCoolplayBase", method = RequestMethod.POST)
+    public Result updateCoolplayBase(CoolplayBaseModel coolplayBaseModel) {
+
+        try{
+            int saveCnt = coolplayBaseService.updateNotNull(coolplayBaseModel);
+
+            coolplayBaseLabelService.delByBaseId(coolplayBaseModel.getId());
             if(CollectionUtils.isNotEmpty(coolplayBaseModel.getLabelIds())) {
                 for(Integer labelId : coolplayBaseModel.getLabelIds()) {
                     CoolplayBaseLabelModel baseLabelModel = new CoolplayBaseLabelModel();

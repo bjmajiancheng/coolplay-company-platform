@@ -11,10 +11,7 @@ import com.coolplay.company.common.handler.Sortable;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.persistence.*;
 
 /**
@@ -123,7 +120,7 @@ public class CoolplayBaseModel extends Sortable {
 	private String companyUserName;//"创建人名称"
 
 	@Transient
-	private List<Integer> labelIds;//"标签集合"
+	private List<Integer> labelIds = new ArrayList<Integer>();//"标签集合"
 
 	@Transient
 	private String labelName = "";//"标签名称"

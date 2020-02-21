@@ -43,5 +43,9 @@
 	    FROM d_coolplay_base_label WHERE id = #{id}
 	</select>
 
+	<delete id="delByBaseId">
+		DELETE FROM d_coolplay_base_label WHERE coolplay_base_id = #{baseId}
+	</delete>
+
 </mapper>
 

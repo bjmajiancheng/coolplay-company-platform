@@ -93,4 +93,12 @@ public class CoolplayBaseLabelServiceImpl extends BaseService<CoolplayBaseLabelM
 
 		return baseLabelModelMap;
 	}
+
+	public int delByBaseId(Integer baseId) {
+		if(baseId == null || baseId <= 0) {
+			return 0;
+		}
+
+		return coolplayBaseLabelMapper.delByBaseId(baseId);
+	}
 }
