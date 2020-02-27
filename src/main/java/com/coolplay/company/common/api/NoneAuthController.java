@@ -174,7 +174,7 @@ public class NoneAuthController {
         List<IndustryModel> industryModels = industryService.find(Collections.singletonMap("isDel", 0));
 
         if(CollectionUtils.isEmpty(industryModels)) {
-            return ResponseUtil.error("系统异常, 请稍后重试");
+            return ResponseUtil.error("行业数据为空, 请联系管理员添加行业数据");
         }
 
         List<Option> options = new ArrayList<Option>();
